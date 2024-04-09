@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Text, Pressable } from 'react-native';
-import DropShadow from 'react-native-drop-shadow';
+import React from 'react';
+import { Image, View, StyleSheet, TextInput, Text, Pressable } from 'react-native';
+import Logo from '../Logo/Logo';
 import { COLORS } from '../../styleConstants';
 
-
-export default function LoginForm({ loginHandler, signupHandler }: { loginHandler: (user: string, password: string) => void, signupHandler: () => void}) {    
+export default function LoginForm({ loginHandler, signupHandler }: { loginHandler: (user: string, password: string) => void, signupHandler: () => void }) {
     return (
-        /* <DropShadow style={styles.containerShadows} > */
-           <View style={[styles.container, styles.containerShadows]}>
+        <View style={styles.container}>
+            <Logo/>
+
+            <View style={styles.form}>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>User</Text>
                     <TextInput style={styles.input} />
@@ -18,37 +19,30 @@ export default function LoginForm({ loginHandler, signupHandler }: { loginHandle
                     <TextInput style={styles.input} />
                 </View>
 
-                <Pressable onPress={() => loginHandler('', '')} style={styles.login}>
+                <Pressable onPress={() => loginHandler('', '')} style={styles.button}>
                     <Text>Log in</Text>
                 </Pressable>
 
                 <Pressable onPress={signupHandler} >
-                    <Text>Sign up</Text>
+                    <Text style={styles.link}>Sign up</Text>
                 </Pressable>
             </View>
-        /* </DropShadow> */
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignSelf: 'center',
-        maxHeight: '40%',
-        borderRadius: 12,
-        padding: 16,
+        height: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: COLORS.lightOrange
+        justifyContent: 'center'
     },
-    containerShadows: {
-        shadowColor: '#ffffff',
-        elevation: 20,
-        shadowOffset: {width: 5, height: 5},
-        shadowOpacity: 1,
-        shadowRadius: 3, 
-        borderColor: 'black',
-        borderWidth: 1
+    form: {
+        marginTop: 20,
+        padding: 12,
+        borderRadius: 12,
+        alignItems: 'center',
+        backgroundColor: COLORS.lightOrange
     },
     inputContainer: {
         alignSelf: 'center',
@@ -60,7 +54,6 @@ const styles = StyleSheet.create({
     },
     label: {
         marginBottom: 5,
-
     },
     input: {
         height: 40,
@@ -69,10 +62,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: 'white'
     },
-    login: {
+    button: {
         padding: 8,
+        marginBottom: 16,
         borderWidth: 1,
         borderRadius: 5,
         backgroundColor: 'lightblue',
+    }, 
+    link: {
+        color: 'blue'
     }
 });
