@@ -19,6 +19,7 @@ export default function RecipeForm() {
 
 const styles = StyleSheet.create({
     container: {
+        height: '89%',
         backgroundColor: 'red'
     }
 });

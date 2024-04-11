@@ -22,16 +22,15 @@ export default function Header ({logoutHandler}: {logoutHandler: () => void}) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 60,
         width: '100%',
+        marginTop: 20,
+        padding: 5,
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: 'green',
+        justifyContent: 'space-between'
     },
     imageContainer: {
         width: 32,
-        height: 32,
-        backgroundColor: 'blue'
+        height: 32
     },
     image: {
         width: 32,
