@@ -16,7 +16,7 @@ export default function LoginForm({ loginHandler, signupHandler }: { loginHandle
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Password</Text>
-                    <TextInput style={styles.input} />
+                    <TextInput style={styles.input} secureTextEntry={true} />
                 </View>
 
                 <Pressable onPress={() => loginHandler('', '')} style={styles.button}>

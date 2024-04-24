@@ -7,13 +7,13 @@ const USER_IMAGE = require('../../../assets/USER_IMAGE.png');
 export default function Header ({logoutHandler}: {logoutHandler: () => void}) {
     return (
         <View style={styles.container}>
-            <View style={[styles.imageContainer, styles.logo]}>
+            <View style={styles.imageContainer}>
                 <Image source={LOGO_IMAGE} style={styles.image}/>
             </View>
 
             <Text style={styles.title}>MyCook</Text>
             
-            <Pressable onPress={logoutHandler} style={[styles.imageContainer, styles.user]}>
+            <Pressable onPress={logoutHandler} style={styles.imageContainer}>
                 <Image source={USER_IMAGE} style={styles.image} />
             </Pressable>
         </View>
@@ -22,6 +22,7 @@ export default function Header ({logoutHandler}: {logoutHandler: () => void}) {
 
 const styles = StyleSheet.create({
     container: {
+        height: '7%',
         width: '100%',
         marginTop: 20,
         padding: 5,
@@ -29,21 +30,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     imageContainer: {
-        width: 32,
-        height: 32
+        width: 38,
+        height: 38
     },
     image: {
-        width: 32,
-        height: 32,
+        width: 38,
+        height: 38,
     }, 
-    logo: {
-   
-    },
-    user: {
-   
-    },
     title: {
-        fontSize: 20,
+        fontSize: 26,
         fontWeight: 'bold'
     }
 });
