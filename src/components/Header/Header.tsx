@@ -22,12 +22,15 @@ export default function Header ({logoutHandler}: {logoutHandler: () => void}) {
 
 const styles = StyleSheet.create({
     container: {
+<<<<<<< HEAD
         height: '7%',
+=======
+        height: 60,
+>>>>>>> parent of ce9744ce (Tercer)
         width: '100%',
-        marginTop: 20,
-        padding: 5,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        backgroundColor: 'green',
     },
     imageContainer: {
         width: 38,
