@@ -12,6 +12,15 @@ export default function NewPost(){
 
             </DocumentPicker> */}
 
+{/*             <Text>Duration</Text>
+            <TextInput style={styles.input} />
+
+            <Text>Difficulty</Text>
+            <TextInput style={styles.input} />
+
+            <Text>Portions</Text>
+            <TextInput style={styles.input} /> */}
+
             <Text>Description</Text>
             <TextInput style={styles.input} />
 

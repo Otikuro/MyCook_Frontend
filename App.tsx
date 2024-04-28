@@ -7,6 +7,7 @@ import Header from './src/components/Header/Header';
 import { AxiosError, AxiosResponse } from 'axios';
 import TextPost from './src/components/TextPost/TextPost';
 import Navigation from './src/components/Navigation/Navigation';
+import Main from './src/components/Main/Main';
 //import RecipeForm from './src/components/RecipeForm/RecipeForm';
 
 export default function App() {
@@ -40,10 +41,9 @@ export default function App() {
 
   return (
     <>
-      {isLoggedIn ?
+      {isLoggedIn || true ?
         <View>
-          <Header logoutHandler={logoutHandler} ></Header>
-          {/* <RecipeForm></RecipeForm>  */}
+          <Main logoutHandler={logoutHandler}></Main>
         </View>
         : (isSigning ?
           <SignupForm signupHandler={signupHandler} />
