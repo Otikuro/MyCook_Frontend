@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, View, StyleSheet, TextInput, Text, Pressable } from 'react-native';
 import Logo from '../Logo/Logo';
 import { COLORS } from '../../styleConstants';
 
 export default function LoginForm({ loginHandler, signupHandler }: { loginHandler: (user: string, password: string) => void, signupHandler: () => void }) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     return (
         <View style={styles.container}>
             <Logo/>
@@ -11,15 +13,23 @@ export default function LoginForm({ loginHandler, signupHandler }: { loginHandle
             <View style={styles.form}>
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>User</Text>
-                    <TextInput style={styles.input} />
+                    <TextInput 
+                    style={styles.input}
+                    value={username}
+                    onChangeText={setUsername}
+                    />
                 </View>
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>Password</Text>
-                    <TextInput style={styles.input} secureTextEntry={true} />
+                    <TextInput 
+                    style={styles.input}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={true} />
                 </View>
 
-                <Pressable onPress={() => loginHandler('', '')} style={styles.button}>
+                <Pressable onPress={() => loginHandler(username, password)} style={styles.button}>
                     <Text>Log in</Text>
                 </Pressable>
 
