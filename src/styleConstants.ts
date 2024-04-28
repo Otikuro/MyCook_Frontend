@@ -1,1 +1,1 @@
-export const COLORS = {lightOrange: '#ffeccc'};
+export const COLORS = {lightOrange: '#ffeccc', lighterGray: '#EEEEEE'};
