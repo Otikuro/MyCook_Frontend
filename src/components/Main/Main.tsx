@@ -7,10 +7,11 @@ import Explorer from '../Explorer/Explorer';
 import NewPost from '../NewPost/NewPost';
 import Library from '../Library/Library';
 import Navigation from '../Navigation/Navigation';
+import Post from '../Post/Post';
 
 export default function Main ({logoutHandler}: {logoutHandler: () => void}) {
-    const [selected, setSelected] = useState('Posts');
     const [tab, setTab] = useState('Explorer');
+    const [selected, setSelected] = useState('Posts');
 
     function selectorHandler (selectedSelector: string) {
         setSelected(selectedSelector);
@@ -25,18 +26,7 @@ export default function Main ({logoutHandler}: {logoutHandler: () => void}) {
             <Header logoutHandler={logoutHandler} />
 
             { tab === 'Explorer' && (
-            <>
-                <View style={styles.searcher}>
-                    <Searcher />
-                </View>
-                <View style={styles.selector}>
-                    <Selector selectorHandler={selectorHandler} />
-                </View>
-{/*                 /* 
-                    <ScrollView>
-                        <Explorer></Explorer> 
-                    </ScrollView>   */ }
-            </>
+                <Explorer></Explorer> 
             )}
 
             { tab === 'NewPost' && (
@@ -46,7 +36,7 @@ export default function Main ({logoutHandler}: {logoutHandler: () => void}) {
             { tab === 'Library' && (
             <>
                 <View style={styles.selector}>
-                    <Selector selectorHandler={selectorHandler} />
+                    <Selector selectorHandler={selectorHandler} selected={selected}/>
                 </View>
 
 {/*                 <ScrollView>
@@ -54,10 +44,6 @@ export default function Main ({logoutHandler}: {logoutHandler: () => void}) {
                 </ScrollView>  */}
             </>
             )}
-
-            <View style={styles.navigation}>
-                <Navigation navigationHandler={navigationHandler} />
-            </View>
         </View>
     );
 }

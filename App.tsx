@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { islogged, logSess, login, setSessionId } from './src/HTTP Requests/auth';
+import { AxiosError, AxiosResponse } from 'axios';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import LoginForm from './src/components/LoginForm/LoginForm';
 import SignupForm from './src/components/SignupForm/SignupForm';
-import { islogged, logSess, login, setSessionId } from './src/HTTP Requests/auth';
-import Header from './src/components/Header/Header';
-import { AxiosError, AxiosResponse } from 'axios';
-import TextPost from './src/components/TextPost/TextPost';
-import Navigation from './src/components/Navigation/Navigation';
 import Main from './src/components/Main/Main';
-//import RecipeForm from './src/components/RecipeForm/RecipeForm';
+//import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,6 +38,8 @@ export default function App() {
 
   return (
     <>
+      <StatusBar/>
+
       {isLoggedIn || true ?
         <View>
           <Main logoutHandler={logoutHandler}></Main>
