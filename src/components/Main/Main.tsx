@@ -35,15 +35,13 @@ export default function Main ({logoutHandler}: {logoutHandler: () => void}) {
 
             { tab === 'Library' && (
             <>
-                <View style={styles.selector}>
-                    <Selector selectorHandler={selectorHandler} selected={selected}/>
-                </View>
-
-{/*                 <ScrollView>
-                    <Library></Library> 
-                </ScrollView>  */}
+                <Library /> 
             </>
             )}
+
+            <View style={styles.navigation}>
+                <Navigation navigationHandler={navigationHandler}></Navigation>
+            </View>
         </View>
     );
 }
@@ -51,28 +49,12 @@ export default function Main ({logoutHandler}: {logoutHandler: () => void}) {
 const styles = StyleSheet.create({
     container: {
        flexDirection: 'column',
-       height: '100%',
-       justifyContent: 'space-between'
-    },
-    searcher: {
-        height: '6%',
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        position: 'absolute',
-        top: '9%'
-    },
-    selector: {
-        height: '6%',
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        position: 'absolute',
-        top: '15%',
-        backgroundColor: '#dddddd'
+       height: '100%'
     },
     navigation: {
         height: '6%',
+        borderColor: 'black',
+        borderWidth: 1,
         flexDirection: 'row',
         justifyContent: 'space-around'
     }

@@ -1,8 +1,30 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import Searcher from "../Searcher/Searcher";
 import Selector from "../Selector/Selector";
 import Post from "../Post/Post";
+
+const data = [
+    {title: 'Titulo', description: 'descipodfniohiuohouhovreddfbdbbrebeoij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'},
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'},
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'},
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'},
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'},
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'},
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+    {title: 'Titulo', description: 'descipodfniohiuohouhooij'}, 
+];
+
+const renderItem = ({item}: {item: any}) => (<Post title={item.title} description={item.description} />);
 
 export default function Explorer() {
     const [selected, setSelected] = useState('Posts');
@@ -13,42 +35,20 @@ export default function Explorer() {
 
     return(
         <View style={styles.container}>
-            <View style={styles.searcher}>
-                <Searcher />
-            </View>
+            <Searcher />
 
             <View style={styles.selector}>
                 <Selector selectorHandler={selectorHandler} selected={selected}/>
             </View>
 
-            <ScrollView contentContainerStyle={styles.scroll}>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-                <Post></Post>
-            </ScrollView>
+            <FlatList contentContainerStyle={styles.scroll} data={data} renderItem={renderItem}/>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexGrow: 1
-    },
-    searcher: {
-        height: '6%',
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        backgroundColor: 'purple'
+        height: '88%'
     },
     selector: {
         height: '6%',
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#dddddd'
     },
     scroll: {
-        height: '80%',
-        alignItems: 'center'
+        alignItems: 'stretch'
     }
 });

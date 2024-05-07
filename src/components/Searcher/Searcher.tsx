@@ -1,10 +1,11 @@
 import { Pressable, TextInput, View, StyleSheet, Image } from "react-native";
+
 const EXPLORER_IMAGE = require('../../../assets/EXPLORER_IMAGE.png');
 const FILTER_IMAGE = require('../../../assets/FILTER_IMAGE.png');
 
 export default function Searcher() {
     return (
-        <>
+        <View style={styles.container}>
             <View style={styles.searchBar}>
                 <Image source={EXPLORER_IMAGE} style={styles.searcherImage} />
                 <TextInput style={styles.inputSearchBar} />
@@ -13,19 +14,21 @@ export default function Searcher() {
             <Pressable style={styles.filtersContainer}>
                 <Image source={FILTER_IMAGE} style={styles.filtersImage} />
             </Pressable>
-        </>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-       flexDirection: 'column',
-       height: '100%',
-       justifyContent: 'space-between'
+        height: '7%',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     searchBar: {
-        height: '80%',
-        width: '82%',
+        height: '75%',
+        width: '80%',
         borderRadius: 8,
         marginLeft: '3%',
         flexDirection: 'row',
@@ -38,12 +41,13 @@ const styles = StyleSheet.create({
         marginLeft: '1%'
     },
     inputSearchBar: {
-        width: '90%'
+        width: '98%',
+        left: -28
     }, 
     filtersContainer: {
         width: 38,
         height: 38,
-        marginRight: 8
+        marginLeft: 4
     },
     filtersImage: {
         width: 38,

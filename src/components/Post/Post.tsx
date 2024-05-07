@@ -1,19 +1,22 @@
 import { View, Text, StyleSheet } from "react-native";
 
-export default function Post () {
+export default function Post ({title, description}: {title: string, description: string}) {
     return (
         <View style={styles.container}>
-            <Text>Titulo</Text>
-            <Text>Descripciooooooooooooooooooooooooooooon</Text>
+            <Text style={styles.title}>{title}</Text>
+            <Text>{description}</Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: '15%',
-        width: '80%',
-        margin: 10,
-        backgroundColor: 'green'
+        borderColor: 'black',
+        borderWidth: 1,
+        padding: 8,
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    title: {
     }
 });
