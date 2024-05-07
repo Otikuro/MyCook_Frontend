@@ -1,55 +1,42 @@
 import { useState } from 'react';
-import { View, StyleSheet, Text , ScrollView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import Header from '../Header/Header';
-import Searcher from '../Searcher/Searcher';
-import Selector from '../Selector/Selector';
+import User from '../User/User';
 import Explorer from '../Explorer/Explorer';
 import NewPost from '../NewPost/NewPost';
 import Library from '../Library/Library';
 import Navigation from '../Navigation/Navigation';
-import Post from '../Post/Post';
 
-export default function Main ({logoutHandler}: {logoutHandler: () => void}) {
-    const [tab, setTab] = useState('Explorer');
-    const [selected, setSelected] = useState('Posts');
+export default function Main({ logoutHandler }: { logoutHandler: () => void }) {
+    const [view, setView] = useState('Explorer');
 
-    function selectorHandler (selectedSelector: string) {
-        setSelected(selectedSelector);
+    function viewHandler(selectedView: string) {
+        setView(selectedView);
     }
 
-    function navigationHandler (selectedTab: string) {
-        setTab(selectedTab);
-    }
-    
-    return(
+    return (
         <View style={styles.container}>
-            <Header logoutHandler={logoutHandler} />
+            <Header viewHandler={viewHandler} />
 
-            { tab === 'Explorer' && (
-                <Explorer></Explorer> 
-            )}
+            {view === 'User' ?
+                <User logoutHandler={logoutHandler} />
+                :
+                <>
+                    {view === 'Explorer' && (<Explorer />)}
+                    {view === 'NewPost' && (<NewPost />)}
+                    {view === 'Library' && (<Library />)}
 
-            { tab === 'NewPost' && (
-                <NewPost></NewPost>   
-            )}
-
-            { tab === 'Library' && (
-            <>
-                <Library /> 
-            </>
-            )}
-
-            <View style={styles.navigation}>
-                <Navigation navigationHandler={navigationHandler}></Navigation>
-            </View>
+                    <Navigation viewHandler={viewHandler} />
+                </>
+            }
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-       flexDirection: 'column',
-       height: '100%'
+        flexDirection: 'column',
+        height: '100%'
     },
     navigation: {
         height: '6%',

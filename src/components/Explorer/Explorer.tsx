@@ -37,9 +37,7 @@ export default function Explorer() {
         <View style={styles.container}>
             <Searcher />
 
-            <View style={styles.selector}>
-                <Selector selectorHandler={selectorHandler} selected={selected}/>
-            </View>
+            <Selector selectorHandler={selectorHandler} selected={selected}/>
 
             <FlatList contentContainerStyle={styles.scroll} data={data} renderItem={renderItem}/>
         </View>
@@ -49,13 +47,6 @@ export default function Explorer() {
 const styles = StyleSheet.create({
     container: {
         height: '88%'
-    },
-    selector: {
-        height: '6%',
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        backgroundColor: '#dddddd'
     },
     scroll: {
         alignItems: 'stretch'

@@ -11,8 +11,8 @@ export default function Post ({title, description}: {title: string, description:
 
 const styles = StyleSheet.create({
     container: {
-        borderColor: 'black',
-        borderWidth: 1,
+        borderTopWidth: 1,
+        borderTopColor: 'black',
         padding: 8,
         flexDirection: 'column',
         alignItems: 'center'

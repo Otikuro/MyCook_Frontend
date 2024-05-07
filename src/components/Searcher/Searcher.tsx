@@ -20,7 +20,7 @@ export default function Searcher() {
 
 const styles = StyleSheet.create({
     container: {
-        height: '7%',
+        height: 45,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'center',

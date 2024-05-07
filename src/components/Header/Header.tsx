@@ -1,20 +1,21 @@
-import React from "react";
 import { Image, Text, View, StyleSheet, Pressable } from "react-native";
 
 const LOGO_IMAGE = require('../../../assets/LOGO_IMAGE.png');
 const USER_IMAGE = require('../../../assets/USER_IMAGE.png');
 
-export default function Header ({logoutHandler}: {logoutHandler: () => void}) {
+export default function Header ({viewHandler}: {viewHandler: (selectedView: string) => void}) {
     return (
         <View style={styles.container}>
-            <View style={styles.imageContainer}>
+            <Pressable style={styles.imageContainer} onPress={() => viewHandler('Explorer')}>
                 <Image source={LOGO_IMAGE} style={styles.image}/>
-            </View>
+            </Pressable>
 
-            <Text style={styles.title}>MyCook</Text>
+            <Pressable onPress={() => viewHandler('Explorer')}>
+                <Text style={styles.title}>MyCook</Text>
+            </Pressable>
             
-            <Pressable onPress={logoutHandler} style={styles.imageContainer}>
-                <Image source={USER_IMAGE} style={styles.image} />
+            <Pressable style={styles.imageContainer} onPress={() => viewHandler('User')}>
+                <Image style={styles.image} source={USER_IMAGE}/>
             </Pressable>
         </View>
     );
@@ -22,7 +23,7 @@ export default function Header ({logoutHandler}: {logoutHandler: () => void}) {
 
 const styles = StyleSheet.create({
     container: {
-        height: '6%',
+        height: 45,
         width: '100%',
         padding: 5,
         flexDirection: 'row',
