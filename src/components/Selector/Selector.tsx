@@ -1,14 +1,14 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 
-export default function Selector ({selectorHandler, selected}: {selectorHandler: (selectedSelector: string) => void, selected: any}) {    
+export default function Selector ({type, selected, selectorHandler}: {type: 'Search'|'Post', selected: boolean, selectorHandler: () => void}) {    
     return (
         <View style={styles.container}>
-            <Pressable style={[styles.button, selected === 'Posts' ? styles.selected : null]} onPress={() => selectorHandler('Posts')}>
-                <Text>Posts</Text>
+            <Pressable style={[styles.button, !selected ? styles.selected : null]} onPress={() => selectorHandler()}>
+                <Text>{type === 'Search' ? 'Posts' : 'Post'}</Text>
             </Pressable>
 
-            <Pressable style={[styles.button, selected === 'Channels' ? styles.selected : null]} onPress={() => selectorHandler('Channels')}>
-                <Text>Channels</Text>
+            <Pressable style={[styles.button, selected ? styles.selected : null]} onPress={() => selectorHandler()}>
+                <Text>{type === 'Search' ? 'Channels' : 'Recipe'}</Text>
             </Pressable>
         </View>
     );
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#dddddd'
     },
     button: {
-        height: '80%',
-        width: '46%',
+        height: '70%',
+        width: '44%',
         borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center'

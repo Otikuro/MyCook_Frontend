@@ -7,12 +7,12 @@ export default function Searcher() {
     return (
         <View style={styles.container}>
             <View style={styles.searchBar}>
-                <Image source={EXPLORER_IMAGE} style={styles.searcherImage} />
+                <Image style={styles.searcherImage} source={EXPLORER_IMAGE}/>
                 <TextInput style={styles.inputSearchBar} />
             </View>
 
             <Pressable style={styles.filtersContainer}>
-                <Image source={FILTER_IMAGE} style={styles.filtersImage} />
+                <Image style={styles.filtersImage} source={FILTER_IMAGE}/>
             </Pressable>
         </View>
     );
@@ -27,17 +27,17 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     searchBar: {
-        height: '75%',
+        height: '70%',
         width: '80%',
         borderRadius: 8,
         marginLeft: '3%',
         flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: '#dddddd'
     },
     searcherImage: {
         width: 28,
         height: 28,
-        marginTop: '1.5%',
         marginLeft: '1%'
     },
     inputSearchBar: {

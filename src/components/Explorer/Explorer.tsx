@@ -27,17 +27,17 @@ const data = [
 const renderItem = ({item}: {item: any}) => (<Post title={item.title} description={item.description} userName={item.userName} score={item.score}/>);
 
 export default function Explorer() {
-    const [selected, setSelected] = useState('Posts');
+    const [selected, setSelected] = useState(false);
 
-    function selectorHandler (selectedSelector: string) {
-        setSelected(selectedSelector);
+    function selectorHandler () {
+        setSelected(previous => !previous);
     }
 
     return(
         <View style={styles.container}>
             <Searcher />
 
-            <Selector selectorHandler={selectorHandler} selected={selected}/>
+            <Selector type={'Search'} selected={selected} selectorHandler={selectorHandler}/>
 
             <FlatList contentContainerStyle={styles.scroll} data={data} renderItem={renderItem}/>
         </View>
