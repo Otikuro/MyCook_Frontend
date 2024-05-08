@@ -17,6 +17,7 @@ export default function Selector ({selectorHandler, selected}: {selectorHandler:
 const styles = StyleSheet.create({
     container: {
         height: 45,
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',

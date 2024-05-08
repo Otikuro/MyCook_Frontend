@@ -23,8 +23,6 @@ export default function Navigation({ viewHandler }: { viewHandler: (selectedView
 const styles = StyleSheet.create({
     container: {
         height: 45,
-        borderTopWidth: 1,
-        borderTopColor: '#000000',
         flexDirection: 'row',
         justifyContent: 'space-around'
     },

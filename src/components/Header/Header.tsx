@@ -7,7 +7,7 @@ export default function Header ({viewHandler}: {viewHandler: (selectedView: stri
     return (
         <View style={styles.container}>
             <Pressable style={styles.imageContainer} onPress={() => viewHandler('Explorer')}>
-                <Image source={LOGO_IMAGE} style={styles.image}/>
+                <Image style={styles.image} source={LOGO_IMAGE}/>
             </Pressable>
 
             <Pressable onPress={() => viewHandler('Explorer')}>
