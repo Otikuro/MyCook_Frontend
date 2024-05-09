@@ -16,7 +16,7 @@ export default function Main({ logoutHandler }: { logoutHandler: () => void }) {
 
     return (
         <View style={styles.container}>
-            <Header viewHandler={viewHandler} />
+            <Header viewHandler={viewHandler}/>
 
             {view === 'User' ?
                 <User logoutHandler={logoutHandler} />

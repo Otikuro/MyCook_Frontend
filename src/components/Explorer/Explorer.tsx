@@ -2,44 +2,60 @@ import { useState } from 'react';
 import { FlatList, StyleSheet, View } from "react-native";
 import Searcher from "../Searcher/Searcher";
 import Selector from "../Selector/Selector";
-import Post from "../Post/Post";
+import PostPreview from "../PostPreview/PostPreview";
+import Post from '../Post/Post';
 
 const data = [
-    {title: 'Titulo', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ea saepe at eligendi excepturi. Repudiandae atque fuga facilis temporibus quod harum mollitia aliquam quis unde libero eius architecto inventore quam id magnam, omnis quos natus.', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20},
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20},
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20},
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20},
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20},
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20},
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
-    {title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20}, 
+    { id: 0, title: 'Titulo', description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ea saepe at eligendi excepturi. Repudiandae atque fuga facilis temporibus quod harum mollitia aliquam quis unde libero eius architecto inventore quam id magnam, omnis quos natus.', userName: 'Nombre', score: 20 },
+    { id: 1, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id:2, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id:3, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id:4, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id:5, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id:6, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id:7, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id: 8, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id: 9, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id: 10, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id: 11, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id: 12, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id: 13, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id: 14, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id: 15, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
+    { id: 16, title: 'Titulo', description: 'descipodfniohiuohouhooij', userName: 'Nombre', score: 20 },
 ];
 
-const renderItem = ({item}: {item: any}) => (<Post title={item.title} description={item.description} userName={item.userName} score={item.score}/>);
-
 export default function Explorer() {
-    const [selected, setSelected] = useState(false);
+    const [tabSelected, setTabSelected] = useState(false);
+    const [postSelected, setPostSelected]: any = useState();
 
-    function selectorHandler () {
-        setSelected(previous => !previous);
+    function selectorHandler() {
+        setTabSelected(previous => !previous);
     }
 
-    return(
+    function viewHandler() {
+        setPostSelected(1);
+    }
+
+    function postHandler() {
+        setPostSelected(undefined);
+    }
+
+    const renderItem = ({ item }: { item: any }) => (<PostPreview id={item.id} title={item.title} description={item.description} userName={item.userName} score={item.score} viewHandler={viewHandler} />);
+
+    return (
         <View style={styles.container}>
-            <Searcher />
+            {postSelected !== undefined ?
+                <Post />
+                :
+                <>
+                    <Searcher />
 
-            <Selector type={'Search'} selected={selected} selectorHandler={selectorHandler}/>
+                    <Selector type={'Search'} tabSelected={tabSelected} selectorHandler={selectorHandler} />
 
-            <FlatList contentContainerStyle={styles.scroll} data={data} renderItem={renderItem}/>
+                    <FlatList contentContainerStyle={styles.scroll} data={data} renderItem={renderItem} />
+                </>
+            }
         </View>
     );
 }

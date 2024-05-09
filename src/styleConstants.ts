@@ -1,1 +1,1 @@
-export const COLORS = {lightOrange: '#ffeccc', lighterGray: '#EEEEEE'};
+export const COLORS = {lightOrange: '#ffeccc', lightGrey: '#dddddd' ,lighterGray: '#eeeeee', lightestGrey: '#f5f5f5', postBorder: 'rgba(0, 0, 0, 0.33)'};

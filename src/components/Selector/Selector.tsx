@@ -1,13 +1,13 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 
-export default function Selector ({type, selected, selectorHandler}: {type: 'Search'|'Post', selected: boolean, selectorHandler: () => void}) {    
+export default function Selector ({type, tabSelected, selectorHandler}: {type: 'Search'|'Post', tabSelected: boolean, selectorHandler: () => void}) {    
     return (
         <View style={styles.container}>
-            <Pressable style={[styles.button, !selected ? styles.selected : null]} onPress={() => selectorHandler()}>
+            <Pressable style={[styles.button, !tabSelected ? styles.selected : null]} onPress={() => selectorHandler()}>
                 <Text>{type === 'Search' ? 'Posts' : 'Post'}</Text>
             </Pressable>
 
-            <Pressable style={[styles.button, selected ? styles.selected : null]} onPress={() => selectorHandler()}>
+            <Pressable style={[styles.button, tabSelected ? styles.selected : null]} onPress={() => selectorHandler()}>
                 <Text>{type === 'Search' ? 'Channels' : 'Recipe'}</Text>
             </Pressable>
         </View>

@@ -16,7 +16,7 @@ export default function PostForm() {
                 </Pressable>
 
                 <Pressable style={[styles.button, styles.postButton]}>
-                    <Text>Post</Text>
+                    <Text style={styles.postButtonText}>Post</Text>
                 </Pressable>
             </View>
         </View>
@@ -49,12 +49,16 @@ const styles = StyleSheet.create({
         flexGrow: 1
     },
     cancelButton: {       
-        backgroundColor: '#FFE9E9',
+        backgroundColor: '#FFE9E9'
     },
     cancelButtonText: {
-        color: '#FF0000'
+        color: '#FF0000',
+        textAlign: 'center'
     },
     postButton: {
         backgroundColor: '#FFAE27',
+    },
+    postButtonText: {
+        textAlign: 'center'
     }
 });
