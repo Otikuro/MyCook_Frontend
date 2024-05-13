@@ -7,13 +7,13 @@ const LIBRARY_IMAGE = require('../../../assets/LIBRARY_IMAGE.png');
 export default function Navigation({ viewHandler }: { viewHandler: (selectedView: string) => void }) {
     return (
         <View style={styles.container}>
-            <Pressable style={styles.imageContainer} onPress={() => viewHandler('Explorer')} >
+            <Pressable onPress={() => viewHandler('Explorer')} >
                 <Image source={EXPLORER_IMAGE} style={styles.image} />
             </Pressable>
-            <Pressable style={styles.imageContainer} onPress={() => viewHandler('NewPost')}>
+            <Pressable onPress={() => viewHandler('NewPost')}>
                 <Image source={NEW_POST_IMAGE} style={styles.image} />
             </Pressable>
-            <Pressable style={styles.imageContainer} onPress={() => viewHandler('Library')}>
+            <Pressable onPress={() => viewHandler('Library')}>
                 <Image source={LIBRARY_IMAGE} style={styles.image} />
             </Pressable>
         </View>
@@ -24,12 +24,8 @@ const styles = StyleSheet.create({
     container: {
         height: 45,
         flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-around'
-    },
-    imageContainer: {
-        height: 38,
-        width: 38,
-        margin: '1%'
     },
     image: {
         height: 38,

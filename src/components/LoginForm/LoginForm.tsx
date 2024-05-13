@@ -1,85 +1,43 @@
-import React, { useState } from 'react';
-import { Image, View, StyleSheet, TextInput, Text, Pressable } from 'react-native';
-import Logo from '../Logo/Logo';
-import { COLORS } from '../../styleConstants';
+import { useState } from 'react';
+import { Image, View, TextInput, Text, Pressable } from 'react-native';
+import { INITIAL_FORMS } from '../../styleConstants';
+
+const LOGO_IMAGE = require('../../../assets/LOGO_IMAGE.png');
 
 export default function LoginForm({ loginHandler, signupHandler }: { loginHandler: (user: string, password: string) => void, signupHandler: () => void }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    return (
-        <View style={styles.container}>
-            <Logo/>
 
-            <View style={styles.form}>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>User</Text>
-                    <TextInput 
-                    style={styles.input}
+    return (
+        <View style={INITIAL_FORMS.container}>
+            <Image style={INITIAL_FORMS.image} source={LOGO_IMAGE} />
+
+            <Text style={INITIAL_FORMS.title}>MyCook</Text>
+
+            <View style={INITIAL_FORMS.form}>
+                <Text>User</Text>
+                <TextInput
+                    style={INITIAL_FORMS.input}
                     value={username}
                     onChangeText={setUsername}
-                    />
-                </View>
+                />
 
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Password</Text>
-                    <TextInput 
-                    style={styles.input}
+                <Text>Password</Text>
+                <TextInput
+                    style={INITIAL_FORMS.input}
                     value={password}
                     onChangeText={setPassword}
-                    secureTextEntry={true} />
-                </View>
+                    secureTextEntry={true}
+                />
 
-                <Pressable onPress={() => loginHandler(username, password)} style={styles.button}>
+                <Pressable onPress={() => loginHandler(username, password)} style={INITIAL_FORMS.button}>
                     <Text>Log in</Text>
                 </Pressable>
 
                 <Pressable onPress={signupHandler} >
-                    <Text style={styles.link}>Sign up</Text>
+                    <Text style={INITIAL_FORMS.link}>Sign up</Text>
                 </Pressable>
             </View>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    form: {
-        marginTop: 20,
-        padding: 12,
-        borderRadius: 12,
-        alignItems: 'center',
-        backgroundColor: COLORS.lightOrange
-    },
-    inputContainer: {
-        alignSelf: 'center',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginBottom: 20,
-        width: 'auto',
-        maxWidth: 250
-    },
-    label: {
-        marginBottom: 5,
-    },
-    input: {
-        height: 40,
-        width: 240,
-        borderWidth: 1,
-        borderRadius: 5,
-        backgroundColor: 'white'
-    },
-    button: {
-        padding: 8,
-        marginBottom: 16,
-        borderWidth: 1,
-        borderRadius: 5,
-        backgroundColor: 'lightblue',
-    }, 
-    link: {
-        color: 'blue'
-    }
-});

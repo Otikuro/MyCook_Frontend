@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import Header from '../Header/Header';
 import User from '../User/User';
 import Explorer from '../Explorer/Explorer';
@@ -15,8 +14,8 @@ export default function Main({ logoutHandler }: { logoutHandler: () => void }) {
     }
 
     return (
-        <View style={styles.container}>
-            <Header viewHandler={viewHandler}/>
+        <>
+            <Header viewHandler={viewHandler} />
 
             {view === 'User' ?
                 <User logoutHandler={logoutHandler} />
@@ -29,20 +28,6 @@ export default function Main({ logoutHandler }: { logoutHandler: () => void }) {
                     <Navigation viewHandler={viewHandler} />
                 </>
             }
-        </View>
+        </>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'column',
-        height: '100%'
-    },
-    navigation: {
-        height: '6%',
-        borderColor: 'black',
-        borderWidth: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-around'
-    }
-});

@@ -24,8 +24,8 @@ export default function App() {
       setIsLoggedIn(false);
     }
     login(username, password)
-    .then(handleValidLogin)
-    .catch(handleIvalidLogin)
+      .then(handleValidLogin)
+      .catch(handleIvalidLogin)
   }
 
   function signupHandler(): void {
@@ -38,12 +38,10 @@ export default function App() {
 
   return (
     <>
-      <StatusBar/>
+      <StatusBar />
 
       {isLoggedIn || true ?
-        <View>
-          <Main logoutHandler={logoutHandler}></Main>
-        </View>
+        <Main logoutHandler={logoutHandler} />
         : (isSigning ?
           <SignupForm signupHandler={signupHandler} />
           :
@@ -52,9 +50,3 @@ export default function App() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-  }
-});
