@@ -4,28 +4,28 @@ import Selector from "../Selector/Selector";
 import PostForm from "../PostForm/PostForm";
 import RecipeForm from "../RecipeForm/RecipeForm";
 
-export default function NewPost(){
-    const [selected, setSelected] = useState(false);
+export default function NewPost() {
+  const [selected, setSelected] = useState(false);
 
-    function selectorHandler () {
-        setSelected(previous => !previous);
-    }
+  function selectorHandler() {
+    setSelected((previous) => !previous);
+  }
 
-    return (
-        <View style={styles.container}>
-            <Selector type={'Post'} selected={selected} selectorHandler={selectorHandler}/>
+  return (
+    <View style={styles.container}>
+      <Selector
+        type={"Post"}
+        tabSelected={selected}
+        selectorHandler={selectorHandler}
+      />
 
-            {!selected ?
-                <PostForm/>
-            :
-                <RecipeForm/>
-            }
-        </View>
-    );
+      {!selected ? <PostForm /> : <RecipeForm />}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        height: '88%'
-    }
+  container: {
+    height: "88%",
+  },
 });
