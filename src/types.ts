@@ -10,7 +10,17 @@ export type UserType = {
 export type PostType = {
   title: string;
   body: string;
-  votes: number;
-  user: UserType;
+  votes?: number;
+  user?: UserType;
   images: ImageType[];
+};
+export type StepType = {
+  title: string;
+  description: string;
+  time: number;
+  images: ImageType[];
+  method: string;
+};
+export type RecipeType = PostType & {
+  steps: StepType[];
 };
