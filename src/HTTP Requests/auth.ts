@@ -1,14 +1,13 @@
 import axios from 'axios';
-const server = 'http://127.0.0.1:8000/'
-const endpoint = 'api/auth/'
+import { server, sessionId } from './general';
+const endpoint = "api/auth/";
 
-export let sessionId = '';
 
 export function islogged(){
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: 'http://127.0.0.1:8000/api/auth/logged?sessionId='+sessionId,
+        url: server+endpoint+'?sessionId='+sessionId,
       };
     return axios.request(config)
 }
@@ -17,7 +16,7 @@ export function login(username:string, password:string){
     let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://127.0.0.1:8000/api/auth/login',
+        url: server+endpoint+'/api/auth/login',
         headers:{
             'Content-Type': 'application/json',
             'Accept': '*/*'
@@ -31,7 +30,7 @@ export function logout(){
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: 'http://127.0.0.1:8000/api/auth/logout',
+        url: server+endpoint+'/api/auth/logout',
         headers: { 
           'Cookie': 'hola=1'
         }
@@ -39,10 +38,8 @@ export function logout(){
     return axios.request(config)
 }
 
-export function setSessionId(newSessionId: string){
-  sessionId = newSessionId;
-}
-
 export function logSess(){
   console.log(sessionId)
 }
+
+export { sessionId };
