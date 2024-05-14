@@ -4,8 +4,10 @@ import * as ImagePicker from "expo-image-picker";
 
 export default function AddImageButton({
   addImageFunction,
+  width = 1,
 }: {
   addImageFunction: (newImage: ImageType) => void;
+  width: number;
 }) {
   async function getImage() {
     ImagePicker.launchImageLibraryAsync({
@@ -22,7 +24,13 @@ export default function AddImageButton({
     });
   }
   return (
-    <Pressable style={styles.container} onPress={getImage}>
+    <Pressable
+      style={[
+        styles.container,
+        { width: Dimensions.get("window").width * width },
+      ]}
+      onPress={getImage}
+    >
       <Text>Add image</Text>
     </Pressable>
   );
@@ -30,8 +38,7 @@ export default function AddImageButton({
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width, // Fixed width for button
-    height: "100%",
+    aspectRatio: 1,
     backgroundColor: "lightgray",
     flexGrow: 1,
   },
