@@ -24,8 +24,7 @@ export default function ImageSlider({
   const addImages = setImages != undefined;
 
   function addImage(newImage: ImageType) {
-    //@ts-ignore
-    if (addImages) setImages([...images, newImage]);
+    if (setImages) setImages([...images, newImage]);
   }
   function deleteCurrentImage() {
     setImages(images.filter((image, index) => index != renderedIndex));
@@ -55,6 +54,11 @@ export default function ImageSlider({
   ];
   if (addImages) data.push({ isButton: true, imageId: "button" });
 
+  const onViewableItemsChanged = (viewableItems) => {
+    let viewableIndex = viewableItems.find((item) => item.isViewable);
+    setRenderedIndex(viewableIndex?.index ?? 0);
+  };
+
   return (
     <View style={styles.container}>
       {images.length > 0 && renderedIndex < images.length && (
@@ -73,10 +77,7 @@ export default function ImageSlider({
       <FlatList
         horizontal
         pagingEnabled
-        onViewableItemsChanged={({ viewableItems, changed }) => {
-          let viewableIndex = viewableItems.find((item) => item.isViewable);
-          setRenderedIndex(viewableIndex?.index ?? 0);
-        }}
+        onViewableItemsChanged={onViewableItemsChanged}
         showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
         data={data}
         renderItem={renderImage}
