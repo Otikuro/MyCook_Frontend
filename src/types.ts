@@ -4,15 +4,16 @@ export type ImageType = {
   alt: string;
 };
 export type UserType = {
-  username: string;
-  profilePic: ImageType;
+  name: string;
+  profilePic?: ImageType;
 };
 export type PostType = {
+  post_id?: number;
   title: string;
   body: string;
   votes?: number;
   user?: UserType;
-  images: ImageType[];
+  images?: ImageType[];
 };
 export type StepType = {
   title: string;

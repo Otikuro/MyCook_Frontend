@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ImageType } from "../../types";
 import {
   Image,
@@ -54,10 +54,11 @@ export default function ImageSlider({
   ];
   if (addImages) data.push({ isButton: true, imageId: "button" });
 
-  const onViewableItemsChanged = (viewableItems) => {
+  const onViewableItemsChanged = ({ viewableItems }) => {
     let viewableIndex = viewableItems.find((item) => item.isViewable);
     setRenderedIndex(viewableIndex?.index ?? 0);
   };
+  const onViewableItemsCallback = useRef(onViewableItemsChanged);
 
   return (
     <View style={styles.container}>
@@ -66,18 +67,20 @@ export default function ImageSlider({
           <Text style={[styles.info, styles.index]}>
             {renderedIndex + 1}/{images.length}
           </Text>
-          <Pressable
-            style={[styles.info, styles.delete]}
-            onPress={deleteCurrentImage}
-          >
-            <Text style={styles.deleteText}>x</Text>
-          </Pressable>
+          {setImages && (
+            <Pressable
+              style={[styles.info, styles.delete]}
+              onPress={deleteCurrentImage}
+            >
+              <Text style={styles.deleteText}>x</Text>
+            </Pressable>
+          )}
         </>
       )}
       <FlatList
         horizontal
         pagingEnabled
-        onViewableItemsChanged={onViewableItemsChanged}
+        onViewableItemsChanged={onViewableItemsCallback.current}
         showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
         data={data}
         renderItem={renderImage}
