@@ -19,7 +19,7 @@ export default function AddImageButton({
         addImageFunction({
           imageId: result.assets[0].uri.slice(-24, -4),
           alt: "",
-          source: result.assets[0].uri,
+          url: result.assets[0].uri,
         });
     });
   }

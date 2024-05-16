@@ -1,6 +1,6 @@
 export type ImageType = {
   imageId: string;
-  source: string;
+  url: string;
   alt: string;
 };
 export type UserType = {

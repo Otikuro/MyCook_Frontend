@@ -34,9 +34,7 @@ export default function PostForm() {
         name: image.imageId,
         type: "image/jpeg",
         uri:
-          Platform.OS === "ios"
-            ? image.source.replace("file://", "")
-            : image.source,
+          Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
       })
     );
     console.log("sendin", fd);

@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet } from "react-native";
 import { PostType, RecipeType } from "../../types";
-import PostPreview from "../PostPreview/PostPreview";
+import Post from "../Post/Post";
 
 export default function PostList({
   posts,
@@ -10,8 +10,9 @@ export default function PostList({
   setPostSelected: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const renderItem = ({ item }: { item: PostType }) => (
-    <PostPreview
+    <Post
       post={item}
+      isPreviewed
       viewHandler={() => setPostSelected(item.post_id)}
       key={item.post_id}
     />

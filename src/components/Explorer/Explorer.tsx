@@ -7,6 +7,7 @@ import Post from "../Post/Post";
 import PostList from "../PostList/PostList";
 import { PostType, RecipeType } from "../../types";
 import { getAllPost } from "../../HTTP Requests/post";
+import { server } from "../../HTTP Requests/general";
 
 const data: PostType[] = [
   {
@@ -140,6 +141,13 @@ export default function Explorer() {
   useEffect(() => {
     getAllPost()
       .then((posts) => {
+        posts.forEach((post) => {
+          post.images.forEach((image) => {
+            image.url = server + "api/image/" + image.url;
+            console.log(image.url);
+          });
+          console.log(post.images);
+        });
         setRenderedPosts(posts);
       })
       .catch((error) => console.log(error));
@@ -148,7 +156,9 @@ export default function Explorer() {
   return (
     <View style={styles.container}>
       {postSelected !== undefined ? (
-        <Post />
+        <Post
+          post={renderedPosts.find((post) => (post.post_id = postSelected))}
+        />
       ) : (
         <>
           <Searcher />

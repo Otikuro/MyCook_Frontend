@@ -22,7 +22,6 @@ export default function ImageSlider({
 }) {
   const [renderedIndex, setRenderedIndex] = useState(0);
   const addImages = setImages != undefined;
-
   function addImage(newImage: ImageType) {
     if (setImages) setImages([...images, newImage]);
   }
@@ -41,7 +40,7 @@ export default function ImageSlider({
     return (
       <Image
         alt={image.alt}
-        source={{ uri: image.source }}
+        source={{ uri: image.url }}
         style={[
           styles.image,
           { width: Dimensions.get("window").width * width },
