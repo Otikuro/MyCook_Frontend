@@ -26,25 +26,18 @@ export default function Post({
         </View>
 
         {post.images != undefined && (
+          <>{!isPreviewed && 
           <View style={styles.postImage}>
-            {!isPreviewed && <ImageSlider images={post.images} width={0.88} />}
-            {isPreviewed && (
+             <ImageSlider images={post.images} width={0.88} />
+          </View>}
+          {isPreviewed && post.images[0]!=undefined && (
               <Image
                 style={styles.postImage}
                 source={{ uri: post.images[0].url }}
               />
-            )}
-          </View>
+            ) }
+          </>
         )}
-        {/* <>
-            {!isPreviewed && <ImageSlider images={post.images} width={0.88} />}
-            {isPreviewed && (
-              <Image
-                style={styles.postImage}
-                source={{ uri: post.images[0].url }}
-              />
-            )}
-          </> */}
       </Pressable>
 
       <View style={styles.footer}>

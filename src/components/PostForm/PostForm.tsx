@@ -12,6 +12,7 @@ import { text } from "stream/consumers";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import { createPost } from "../../HTTP Requests/post";
 import { error } from "console";
+import { sessionId } from "../../HTTP Requests/general";
 
 export default function PostForm() {
   const [formData, setFormData] = useState<PostType>({
@@ -26,6 +27,7 @@ export default function PostForm() {
 
   function sendForm() {
     let fd = new FormData();
+    fd.append('sessionId',sessionId);
     fd.append("title", formData.title);
     fd.append("description", formData.body);
     formData.images.forEach((image) =>
