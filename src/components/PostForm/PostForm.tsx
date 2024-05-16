@@ -11,6 +11,7 @@ import { ImageType, PostType } from "../../types";
 import { text } from "stream/consumers";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import { createPost } from "../../HTTP Requests/post";
+import { error } from "console";
 
 export default function PostForm() {
   const [formData, setFormData] = useState<PostType>({
@@ -38,7 +39,11 @@ export default function PostForm() {
             : image.source,
       })
     );
-    createPost(fd);
+    console.log("sendin", fd);
+
+    createPost(fd)
+      .then((response) => console.log("r", response.json()))
+      .catch((error) => console.log("e", error));
   }
 
   return (

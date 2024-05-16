@@ -5,16 +5,16 @@ const endpoint = "api/post/";
 
 export function createPost(fd: FormData) {
   let config = {
-    method: "post",
+    method: "POST",
     maxBodyLength: Infinity,
-    url: server + endpoint + "/all",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "*/*",
-    },
-    data: { ...fd, sessionId: sessionId },
+    url: server + endpoint + "create",
+    data: fd,
   };
-  return axios.request(config);
+  //return axios.request(config);
+  return fetch(config.url, {
+    method: "POST",
+    body: fd,
+  });
 }
 
 export async function getAllPost(): Promise<PostType[]> {
