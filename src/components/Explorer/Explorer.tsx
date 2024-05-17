@@ -6,7 +6,7 @@ import PostPreview from "../PostPreview/PostPreview";
 import Post from "../Post/Post";
 import PostList from "../PostList/PostList";
 import { PostType, RecipeType } from "../../types";
-import { getAllPost } from "../../HTTP Requests/post";
+import { getAllPost, getPost } from "../../HTTP Requests/post";
 import { server } from "../../HTTP Requests/general";
 
 const data: PostType[] = [
@@ -133,31 +133,40 @@ const data: PostType[] = [
 
 export default function Explorer() {
   const [tabSelected, setTabSelected] = useState(false);
-  const [postSelected, setPostSelected] = useState<number | undefined>();
+  const [postIdSelected, setPostIdSelected]= useState<number | undefined>();
+  const [postSelected, setPostSelected] = useState<undefined|PostType>();
   const [renderedPosts, setRenderedPosts] = useState<
     Array<PostType | RecipeType>
   >([]);
 
+  useEffect(()=>{
+    console.log(postIdSelected)
+    if(postIdSelected!=undefined)
+    getPost(postIdSelected)
+    .then(post =>  setPostSelected(post))
+    .catch(e=>console.log(e))
+  },[postIdSelected])
+
   useEffect(() => {
+    let posts = undefined
     getAllPost()
       .then((posts) => {
         posts.forEach((post) => {
-          post.images.forEach((image) => {
-            image.url = server + "api/image/" + image.url;
-            console.log(image.url);
-          });
-          console.log(post.images);
+          if(post.images)
+            post.images.forEach((image) => {
+              image.url = server + "api/image/" + image.url;
+            });
         });
         setRenderedPosts(posts);
-      })
-      .catch((error) => console.log(error));
+      }).catch(e=>console.log(e))
+
   }, []);
 
   return (
     <View style={styles.container}>
-      {postSelected !== undefined ? (
+      {postSelected ? (
         <Post
-          post={renderedPosts.find((post) => (post.post_id = postSelected))}
+          post={postSelected}
         />
       ) : (
         <>
@@ -167,7 +176,7 @@ export default function Explorer() {
             tabSelected={tabSelected}
             selectorHandler={setTabSelected}
           />
-          <PostList posts={renderedPosts} setPostSelected={setPostSelected} />
+          <PostList posts={renderedPosts} setPostSelected={setPostIdSelected} />
         </>
       )}
     </View>

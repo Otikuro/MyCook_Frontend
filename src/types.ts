@@ -1,5 +1,5 @@
 export type ImageType = {
-  imageId: string;
+  image_id: string;
   url: string;
   alt: string;
 };
@@ -12,8 +12,10 @@ export type PostType = {
   title: string;
   body: string;
   votes?: number;
+  voted?: 1|0|null; 
   user?: UserType;
   images?: ImageType[];
+  comments?: CommentType[];
 };
 export type StepType = {
   title: string;
@@ -25,3 +27,9 @@ export type StepType = {
 export type RecipeType = PostType & {
   steps: StepType[];
 };
+export type CommentType = {
+  comment_id: number,
+  date: string,
+  body: string,
+  user: UserType
+}

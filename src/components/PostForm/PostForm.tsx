@@ -33,22 +33,20 @@ export default function PostForm() {
     formData.images.forEach((image) =>
       //@ts-ignore
       fd.append("images[]", {
-        name: image.imageId,
+        name: image.image_id,
         type: "image/jpeg",
         uri:
           Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
       })
     );
-    console.log("sendin", fd);
 
     createPost(fd)
-      .then((response) => console.log("r", response.json()))
+      .then((response) => console.log('Post created'))
       .catch((error) => console.log("e", error));
   }
 
   return (
     <View style={styles.container}>
-      <Text>{JSON.stringify(formData)}</Text>
       <Text>Title</Text>
       <TextInput
         style={styles.input}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { islogged, logSess, login } from "./src/HTTP Requests/auth";
+import { islogged, login } from "./src/HTTP Requests/auth";
 import {
   checkHealth,
   sessionId,
@@ -19,9 +19,7 @@ export default function App() {
 
   function loginHandler(username: string, password: string): void {
     function handleValidLogin(response: AxiosResponse) {
-      console.log(response.data.message);
       setSessionId(response.data.session);
-      logSess();
       setIsLoggedIn(true);
       islogged().then((response) => console.log(response));
     }

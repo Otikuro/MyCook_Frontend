@@ -17,7 +17,7 @@ export default function AddImageButton({
       if (result.canceled) return false;
       else
         addImageFunction({
-          imageId: result.assets[0].uri.slice(-24, -4),
+          image_id: result.assets[0].uri.slice(-24, -4),
           alt: "",
           url: result.assets[0].uri,
         });

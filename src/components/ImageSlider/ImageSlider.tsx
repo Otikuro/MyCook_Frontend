@@ -10,6 +10,7 @@ import {
   Pressable,
 } from "react-native";
 import AddImageButton from "./AddImageButton";
+import { server } from "../../HTTP Requests/general";
 
 export default function ImageSlider({
   images,
@@ -32,26 +33,28 @@ export default function ImageSlider({
   function renderImage({
     item,
   }: {
-    item: ImageType | { isButton: true; imageId: string };
+    item: ImageType | { isButton: true; image_id: "button" };
   }) {
     if (item.hasOwnProperty("isButton"))
       return <AddImageButton addImageFunction={addImage} width={width} />;
     const image = item as ImageType;
+    const url = server+'api/image/'+image.url
     return (
       <Image
         alt={image.alt}
-        source={{ uri: image.url }}
+        source={{ uri: url }}
         style={[
           styles.image,
           { width: Dimensions.get("window").width * width },
         ]}
+        key={image.image_id}
       />
     );
   }
-  let data: Array<ImageType | { isButton: true; imageId: "button" }> = [
+  let data: Array<ImageType | { isButton: true; image_id: "button" }> = [
     ...images,
   ];
-  if (addImages) data.push({ isButton: true, imageId: "button" });
+  if (addImages) data.push({ isButton: true, image_id: "button" });
 
   const onViewableItemsChanged = ({ viewableItems }) => {
     let viewableIndex = viewableItems.find((item) => item.isViewable);
@@ -83,7 +86,7 @@ export default function ImageSlider({
         showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicator
         data={data}
         renderItem={renderImage}
-        keyExtractor={(item) => item.imageId}
+        keyExtractor={(item) => item.image_id}
         contentContainerStyle={{ display: "flex", flexGrow: 1 }} // Allow content to grow horizontally
       />
     </View>

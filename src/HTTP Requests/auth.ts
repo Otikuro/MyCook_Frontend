@@ -38,8 +38,5 @@ export function logout(){
     return axios.request(config)
 }
 
-export function logSess(){
-  console.log(sessionId)
-}
 
 export { sessionId };
