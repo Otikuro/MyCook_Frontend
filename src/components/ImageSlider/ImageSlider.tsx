@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import AddImageButton from "./AddImageButton";
 import { server } from "../../HTTP Requests/general";
+import {COLORS} from '../../styleConstants'
 
 export default function ImageSlider({
   images,
@@ -95,7 +96,7 @@ export default function ImageSlider({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    aspectRatio: 1,
     width: "100%",
     overflow: "scroll", // Allow horizontal scroll
   },

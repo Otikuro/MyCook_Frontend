@@ -1,11 +1,19 @@
+export type ChannelType = {
+  channel_id: number,
+  name: string,
+  is_public: boolean,
+  open_posting: boolean
+};
+export type CommentType = {
+  comment_id: number,
+  date: string,
+  body: string,
+  user: UserType
+}
 export type ImageType = {
   image_id: string;
   url: string;
   alt: string;
-};
-export type UserType = {
-  name: string;
-  profilePic?: ImageType;
 };
 export type PostType = {
   post_id?: number;
@@ -17,6 +25,9 @@ export type PostType = {
   images?: ImageType[];
   comments?: CommentType[];
 };
+export type RecipeType = PostType & {
+  steps: StepType[];
+};
 export type StepType = {
   title: string;
   description: string;
@@ -24,12 +35,7 @@ export type StepType = {
   images: ImageType[];
   method: string;
 };
-export type RecipeType = PostType & {
-  steps: StepType[];
+export type UserType = {
+  name: string;
+  profilePic?: ImageType;
 };
-export type CommentType = {
-  comment_id: number,
-  date: string,
-  body: string,
-  user: UserType
-}

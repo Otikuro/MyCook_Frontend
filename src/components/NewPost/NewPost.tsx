@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextInput, View, Text, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Selector from "../Selector/Selector";
 import PostForm from "../PostForm/PostForm";
 import RecipeForm from "../RecipeForm/RecipeForm";
@@ -26,6 +26,6 @@ export default function NewPost() {
 
 const styles = StyleSheet.create({
   container: {
-    height: "88%",
+    height: "88%"
   },
 });

@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
         height: 45,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        backgroundColor: 'white'
     },
     image: {
         height: 38,

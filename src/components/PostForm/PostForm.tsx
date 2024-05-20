@@ -8,11 +8,10 @@ import {
   Platform,
 } from "react-native";
 import { ImageType, PostType } from "../../types";
-import { text } from "stream/consumers";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import { createPost } from "../../HTTP Requests/post";
-import { error } from "console";
 import { sessionId } from "../../HTTP Requests/general";
+import { COLORS } from '../../styleConstants'
 
 export default function PostForm() {
   const [formData, setFormData] = useState<PostType>({
@@ -27,7 +26,7 @@ export default function PostForm() {
 
   function sendForm() {
     let fd = new FormData();
-    fd.append('sessionId',sessionId);
+    fd.append('sessionId', sessionId);
     fd.append("title", formData.title);
     fd.append("description", formData.body);
     formData.images.forEach((image) =>
@@ -85,9 +84,9 @@ export default function PostForm() {
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
+    height: "94%",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: COLORS.lightestGrey,
     padding: "6%",
   },
   input: {
@@ -99,10 +98,10 @@ const styles = StyleSheet.create({
   buttons: {
     width: "100%",
     marginVertical: 8,
-    flexDirection: "row",
     display: "flex",
+    flexDirection: "row",
     justifyContent: "space-between",
-    gap: 8,
+    gap: 8
   },
   button: {
     borderRadius: 4,

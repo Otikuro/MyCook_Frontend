@@ -25,7 +25,7 @@ export default function Main({ logoutHandler }: { logoutHandler: () => void }) {
                     {view === 'NewPost' && (<NewPost />)}
                     {view === 'Library' && (<Libraries />)}
 
-                    <Navigation viewHandler={viewHandler} />
+                    <Navigation viewHandler={viewHandler} /> 
                 </>
             }
         </>
