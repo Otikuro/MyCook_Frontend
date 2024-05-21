@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { PostType, RecipeType } from "../../types";
+import { getAllPost, getPost } from "../../HTTP Requests/post";
+import { server } from "../../HTTP Requests/general";
 import Searcher from "../Searcher/Searcher";
 import Selector from "../Selector/Selector";
 import Post from "../Post/Post";
 import PostList from "../PostList/PostList";
-import { PostType, RecipeType } from "../../types";
-import { getAllPost, getPost } from "../../HTTP Requests/post";
-import { server } from "../../HTTP Requests/general";
 
 export default function Explorer() {
   const [tabSelected, setTabSelected] = useState(false);
@@ -25,7 +25,6 @@ export default function Explorer() {
   }, [postIdSelected])
 
   useEffect(() => {
-    let posts = undefined
     getAllPost()
       .then((posts) => {
         posts.forEach((post) => {
@@ -34,7 +33,9 @@ export default function Explorer() {
               image.url = server + "api/image/" + image.url;
             });
         });
+
         setRenderedPosts(posts);
+
       }).catch(e => console.log(e))
 
   }, []);

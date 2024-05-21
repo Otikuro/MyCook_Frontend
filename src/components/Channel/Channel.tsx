@@ -1,10 +1,10 @@
 import { Text, StyleSheet, Pressable } from "react-native";
 
-export default function Channel ({title, description}: {title: string, description: string}) {
+export default function Channel ({title}: {title: string}) {
     return(
         <Pressable style={styles.container}>
             <Text style={styles.title}>{title}</Text>
-            <Text>{description}</Text>
+            {/* <Text>{description}</Text> */}
         </Pressable>
     );
 }

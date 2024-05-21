@@ -1,25 +1,35 @@
-import { FlatList, View, StyleSheet, Pressable, Text } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, View, StyleSheet, Pressable, Text, Image } from "react-native";
+import { getUserChannels } from "../../HTTP Requests/channel";
+import { ChannelType } from '../../types'
 import Channel from "../Channel/Channel";
-import { COLORS } from '../../styleConstants'
 
-const data = [
-    {title: 'My Posts', description: 'descipodfniohiuohouhovreddfrgteeivbrwvuerihnahuoeowhgorhouehourhouehporviorehiojgioergreiogibdbbrebeoij'}, 
-    {title: 'Favorites', description: 'descipodfniohiuohouhooij'}, 
-    {title: 'title', description: 'descipodfniohiuohouhooij'}, 
-    {title: 'title', description: 'descipodfniohiuohouhooij'}, 
-    {title: 'title', description: 'descipodfniohiuohouhooij'}, 
-];
+const PLUS = require('../../../assets/NEW_POST_IMAGE.png');
 
-const renderItem = ({item}: {item: any}) => (<Channel title={item.title} description={item.description} />);
+const renderItem = ({ item }: { item: any }) => (<Channel title={item.title} />);
 
-export default function Channels () {
-    return(
+export default function Channels() {
+    const [channels, setChannels] = useState<Array<ChannelType>>([]);
+
+    useEffect(
+        () => {
+            getUserChannels().then(
+                (channels) => setChannels(channels)
+            ).catch(
+                (e) => console.log(e)
+            );
+        },
+        []
+    );
+
+    return (
         <View style={styles.container}>
             <Pressable style={styles.button}>
+                <Image style={styles.newChannelIcon} source={PLUS} />
                 <Text style={styles.buttonText}>New Channel</Text>
             </Pressable>
 
-            <FlatList contentContainerStyle={styles.scroll} data={data} renderItem={renderItem}/>
+            <FlatList contentContainerStyle={styles.scroll} data={channels} renderItem={renderItem} />
         </View>
     );
 }
@@ -29,19 +39,22 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     button: {
-        height: '16%',
         width: '80%',
         borderRadius: 8,
-        borderWidth:2,
-        borderColor: COLORS.postBorder,
         alignSelf: 'center',
+        paddingVertical: 10,
         marginVertical: 18,
-        backgroundColor: COLORS.lightGrey,
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center'
     },
+    newChannelIcon: {
+        height: 80,
+        width: 80
+    },
     buttonText: {
-        fontSize: 20
+        fontSize: 20,
+        fontWeight: 'bold'
     },
     scroll: {
         alignItems: 'stretch'

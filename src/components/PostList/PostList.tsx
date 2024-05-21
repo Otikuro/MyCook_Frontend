@@ -5,7 +5,7 @@ import Post from "../Post/Post";
 export default function PostList({
   posts,
   setPostSelected,
-}: {
+} : {
   posts: Array<PostType | RecipeType>;
   setPostSelected: React.Dispatch<React.SetStateAction<number>>;
 }) {
