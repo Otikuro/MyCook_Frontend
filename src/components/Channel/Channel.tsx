@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { Text, StyleSheet, Pressable } from "react-native";
 
-export default function Library ({title, description}: {title: string, description: string}) {
+export default function Channel ({title, description}: {title: string, description: string}) {
     return(
         <Pressable style={styles.container}>
             <Text style={styles.title}>{title}</Text>

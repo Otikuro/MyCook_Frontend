@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import AddImageButton from "./AddImageButton";
 import { server } from "../../HTTP Requests/general";
-import {COLORS} from '../../styleConstants'
 
 export default function ImageSlider({
   images,

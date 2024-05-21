@@ -62,7 +62,7 @@ export default function Explorer() {
 
 const styles = StyleSheet.create({
   container: {
-    height: "88%",
+    height: '100%'
   },
   scroll: {
     alignItems: "stretch",

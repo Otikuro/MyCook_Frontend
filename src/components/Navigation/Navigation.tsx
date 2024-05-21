@@ -1,33 +1,43 @@
-import { View, Image, Pressable, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Explorer from '../Explorer/Explorer';
+import NewPost from '../NewPost/NewPost';
+import Channels from '../Channels/Channels';
 
-const EXPLORER_IMAGE = require('../../../assets/EXPLORER_IMAGE.png');
-const NEW_POST_IMAGE = require('../../../assets/NEW_POST_IMAGE.png');
-const LIBRARY_IMAGE = require('../../../assets/LIBRARY_IMAGE.png');
+const ICONS = {
+    Explorer: require('../../../assets/EXPLORER_IMAGE.png'),
+    NewPost: require('../../../assets/NEW_POST_IMAGE.png'),
+    Channels: require('../../../assets/LIBRARY_IMAGE.png')
+};
 
-export default function Navigation({ viewHandler }: { viewHandler: (selectedView: string) => void }) {
+const Tab = createBottomTabNavigator();
+
+export default function Navigation() {
     return (
-        <View style={styles.container}>
-            <Pressable onPress={() => viewHandler('Explorer')} >
-                <Image source={EXPLORER_IMAGE} style={styles.image} />
-            </Pressable>
-            <Pressable onPress={() => viewHandler('NewPost')}>
-                <Image source={NEW_POST_IMAGE} style={styles.image} />
-            </Pressable>
-            <Pressable onPress={() => viewHandler('Library')}>
-                <Image source={LIBRARY_IMAGE} style={styles.image} />
-            </Pressable>
-        </View>
+        <NavigationContainer>
+            <Tab.Navigator
+                initialRouteName='Explorer'
+                screenOptions={({ route }) => ({
+                    tabBarIcon: () => {
+                        return (
+                            <Image style={styles.image} source={ICONS[route.name]} />
+                        );
+                    },
+                    headerShown: false,
+                    tabBarHideOnKeyboard: true,
+                    tabBarShowLabel: false,
+                })}
+            >
+                <Tab.Screen name='Explorer' component={Explorer} />
+                <Tab.Screen name='NewPost' component={NewPost} />
+                <Tab.Screen name='Channels' component={Channels} />
+            </Tab.Navigator>
+        </NavigationContainer>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        height: 45,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        backgroundColor: 'white'
-    },
     image: {
         height: 38,
         width: 38
