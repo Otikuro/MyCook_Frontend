@@ -2,7 +2,6 @@ import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import Selector from "../Selector/Selector";
 import PostForm from "../PostForm/PostForm";
-import RecipeForm from "../RecipeForm/RecipeForm";
 
 export default function NewPost() {
   const [selected, setSelected] = useState(false);
@@ -19,13 +18,13 @@ export default function NewPost() {
         selectorHandler={selectorHandler}
       />
 
-      {!selected ? <PostForm /> : <RecipeForm />}
+      <PostForm isText={selected} /> 
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: "88%"
+    height: "100%"
   },
 });

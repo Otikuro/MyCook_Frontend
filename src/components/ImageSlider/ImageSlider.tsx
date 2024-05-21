@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     width: "100%",
     overflow: "scroll", // Allow horizontal scroll
+    marginVertical: 8
   },
   image: {
     //width: "100%", // Fixed width for each image item

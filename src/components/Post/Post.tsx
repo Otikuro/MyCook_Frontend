@@ -22,34 +22,34 @@ export default function Post({
   viewHandler?: () => void;
 }) {
   //if (!isPreviewed) console.log(post)
-  const [voted, setVoted] = useState<-1|0|1>((post.voted==null?0:(post.voted==0?-1:1)))
-  const [renderedVotes,setRenderedVotes] = useState<number>(post.votes)
+  const [voted, setVoted] = useState<-1 | 0 | 1>((post.voted == null ? 0 : (post.voted == 0 ? -1 : 1)))
+  const [renderedVotes, setRenderedVotes] = useState<number>(post.votes)
 
-  function vote(liked: boolean){
+  function vote(liked: boolean) {
     let lastVoted = voted
     let newVoted = 0
     let votesAdded = 0
-    if(liked){
-      newVoted= 1
+    if (liked) {
+      newVoted = 1
       votesAdded = 1
     }
     else {
       newVoted = -1
       votesAdded = -1
     }
-    if(lastVoted==newVoted){
+    if (lastVoted == newVoted) {
       setVoted(0)
-      votesAdded*=-1
-    }else{
-      setVoted(newVoted==1?1:-1)
+      votesAdded *= -1
+    } else {
+      setVoted(newVoted == 1 ? 1 : -1)
       votePost(post.post_id, liked)
-      .then(r=>console.log(r))
-      .catch(e=>console.log(e))
+        .then(r => console.log(r))
+        .catch(e => console.log(e))
     }
-    if(lastVoted==newVoted*-1){
-      votesAdded*=2
+    if (lastVoted == newVoted * -1) {
+      votesAdded *= 2
     }
-    setRenderedVotes(renderedVotes+votesAdded)
+    setRenderedVotes(renderedVotes + votesAdded)
   }
 
   return (
@@ -83,24 +83,26 @@ export default function Post({
           <UserCollapsed name={post.user.name} />
 
           <View style={styles.score}>
-            <Pressable onPress={()=>vote(true)}>
-              <Image style={[styles.iconImage,{tintColor: voted==1?'green':'black'}]} source={UP_ARROW_IMAGE}  />
+            <Pressable onPress={() => vote(true)}>
+              <Image style={[styles.iconImage, { tintColor: voted == 1 ? 'green' : 'black' }]} source={UP_ARROW_IMAGE} />
             </Pressable>
 
             <Text style={styles.scoreText}>{renderedVotes}</Text>
 
-            <Pressable onPress={()=>vote(false)}>
-              <Image style={[styles.iconImage,{tintColor: voted==-1?'red':'black'}]} source={DOWN_ARROW_IMAGE} />
+            <Pressable onPress={() => vote(false)}>
+              <Image style={[styles.iconImage, { tintColor: voted == -1 ? 'red' : 'black' }]} source={DOWN_ARROW_IMAGE} />
             </Pressable>
           </View>
         </View>
       </View>
-      {post.comments != undefined &&
-        (<ScrollView>
+
+      {post.comments != undefined && (
+        <ScrollView style={styles.scroll} >
           {!isPreviewed && post.comments.map((comment, index) => {
             return (<Comment key={index} comment_id={comment.comment_id} body={comment.body} user={comment.user} date={comment.date} />)
           })}
-        </ScrollView>)}
+        </ScrollView>
+      )}
     </View>
   );
 }
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     flexDirection: "column",
     alignItems: "center",
-    width: '100%',
+    width: '100%'
   },
   container: {
     width: '100%',
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.postBorder,
     paddingVertical: 8,
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   body: {
     width: "100%",
@@ -169,4 +171,7 @@ const styles = StyleSheet.create({
     width: "100%",
     aspectRatio: 1,
   },
+  scroll: {
+    width: '100%'
+  }
 });

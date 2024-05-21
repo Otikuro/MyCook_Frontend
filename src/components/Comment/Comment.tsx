@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
-import { CommentType } from "../../types";
 import UserCollapsed from "../UserCollapsed/UserCollapsed";
+import { CommentType } from "../../types";
 import { COLORS } from "../../styleConstants";
 
 export default function Comment({body, date, user}: CommentType){
@@ -21,14 +21,15 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'black',
         padding: 8
-    },body: {
+    },
+    body: {
         width: "100%",
         borderRadius: 8,
         padding: 8,
         marginTop: 10,
         marginBottom: 14,
-        backgroundColor: COLORS.lightGrey,
-      },
+        backgroundColor: COLORS.lightGrey
+    },
     header: {
         display: 'flex',
         justifyContent: 'space-between',
