@@ -4,7 +4,7 @@ import { INITIAL_FORMS } from '../../styleConstants';
 
 const LOGO_IMAGE = require('../../../assets/LOGO_IMAGE.png');
 
-export default function LoginForm({ loginHandler, signupHandler }: { loginHandler: (user: string, password: string) => void, signupHandler: () => void }) {
+export default function LoginForm({ loginHandler, changeFormHandler }: { loginHandler: (user: string, password: string) => void, changeFormHandler: () => void }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -34,7 +34,7 @@ export default function LoginForm({ loginHandler, signupHandler }: { loginHandle
                     <Text>Log in</Text>
                 </Pressable>
 
-                <Pressable onPress={signupHandler} >
+                <Pressable onPress={changeFormHandler} >
                     <Text style={INITIAL_FORMS.link}>Sign up</Text>
                 </Pressable>
             </View>

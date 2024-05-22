@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import { StatusBar } from "react-native";
-import { islogged, login } from "./src/HTTP Requests/auth";
+import { islogged, login, register } from "./src/HTTP Requests/auth";
 import {
   checkHealth,
   sessionId,
   setSessionId,
 } from "./src/HTTP Requests/general";
 import { AxiosError, AxiosResponse } from "axios";
-import LoginForm from "./src/components/LoginForm/LoginForm";
-import SignupForm from "./src/components/SignupForm/SignupForm";
-import { error } from "console";
-//import { StatusBar } from 'expo-status-bar';
-
 import Header from './src/components/Header/Header';
 import Navigation from './src/components/Navigation/Navigation';
+import LoginForm from "./src/components/LoginForm/LoginForm";
+import SignupForm from "./src/components/SignupForm/SignupForm";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,21 +22,36 @@ export default function App() {
       setIsLoggedIn(true);
       islogged().then((response) => console.log(response));
     }
-    function handleIvalidLogin(error: AxiosError) {
+
+    function handleInvalidLogin(error: AxiosError) {
       console.log(error.message);
       setIsLoggedIn(false);
     }
-    login(username, password).then(handleValidLogin).catch(handleIvalidLogin);
-  }
-
-  function signupHandler(): void {
-    setIsSigning((previousValue) => {
-      return !previousValue;
-    });
+    
+    login(username, password)
+    .then(handleValidLogin)
+    .catch(handleInvalidLogin);
   }
 
   function logoutHandler() {
     setIsLoggedIn(false);
+  }
+
+  function signupHandler(username, email, password) {
+    let formData = new FormData();
+    formData.append('username', username);
+    formData.append("email", email);
+    formData.append("password", password);
+    
+    register(formData)
+    .then((response) => console.log('User created: ' + response))
+    .catch((error) => console.log(error));
+  }
+
+  function changeFormHandler(): void {
+    setIsSigning((previousValue) => {
+      return !previousValue;
+    });
   }
 
   useEffect(() => {
@@ -53,17 +65,15 @@ export default function App() {
       <StatusBar />
 
       {isLoggedIn || true ? (
-        //<Main logoutHandler={logoutHandler} />
-
         <>
           <Header/>
             
           <Navigation/> 
         </>
       ) : isSigning ? (
-        <SignupForm signupHandler={signupHandler} />
+        <SignupForm signupHandler={signupHandler} changeFormHandler={changeFormHandler} />
       ) : (
-        <LoginForm loginHandler={loginHandler} signupHandler={signupHandler} />
+        <LoginForm loginHandler={loginHandler} changeFormHandler={changeFormHandler} />
       )}
     </>
   );

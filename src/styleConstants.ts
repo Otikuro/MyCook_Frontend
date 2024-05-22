@@ -31,6 +31,7 @@ export const INITIAL_FORMS = StyleSheet.create({
         borderRadius: 5,
         marginTop: 8,
         marginBottom: 14,
+        paddingHorizontal: 8,
         backgroundColor: 'white'
     },
     button: {

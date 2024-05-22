@@ -1,8 +1,8 @@
 import { View,Text , StyleSheet, Pressable } from "react-native";
-import { Post } from "../../types";
+import { PostType } from "../../types";
 import { COLORS } from "../../styleConstants";
 
-export default function TextPost(post: Post){
+export default function TextPost(post: PostType){
     return(
         <View style={styles.post}>
             <View style={styles.title}>
@@ -12,9 +12,9 @@ export default function TextPost(post: Post){
                 <Text style={styles.bodyText}>{post.body}</Text>
             </View>
             <View style={styles.footer}>
-                <View style={styles.userData}>
+{/*                 <View style={styles.userData}>
                     <Text>{post.user.username}</Text>
-                </View>
+                </View> */}
                 <View style={styles.votes}>
                     <Pressable>A</Pressable>
                     <Text>{post.votes}</Text>

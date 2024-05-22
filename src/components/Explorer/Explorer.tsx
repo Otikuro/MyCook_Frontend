@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { PostType, RecipeType } from "../../types";
+import { FlatList, StyleSheet, View } from "react-native";
+import { ChannelType, PostType, RecipeType } from "../../types";
 import { getAllPost, getPost } from "../../HTTP Requests/post";
 import { server } from "../../HTTP Requests/general";
+import { getAllChannels } from "../../HTTP Requests/channel";
 import Searcher from "../Searcher/Searcher";
 import Selector from "../Selector/Selector";
 import Post from "../Post/Post";
 import PostList from "../PostList/PostList";
+import Channel from "../Channel/Channel";
+
+const renderItem = ({ item }: { item: any }) => (<Channel title={item.title} />);
 
 export default function Explorer() {
   const [tabSelected, setTabSelected] = useState(false);
@@ -15,6 +19,7 @@ export default function Explorer() {
   const [renderedPosts, setRenderedPosts] = useState<
     Array<PostType | RecipeType>
   >([]);
+  const [channels, setChannels] = useState<Array<ChannelType>>([]);
 
   useEffect(() => {
     console.log(postIdSelected)
@@ -40,6 +45,17 @@ export default function Explorer() {
 
   }, []);
 
+  useEffect(
+    () => {
+      getAllChannels().then(
+        (channels) => setChannels(channels)
+      ).catch(
+        (e) => console.log(e)
+      );
+    },
+    []
+  );
+
   return (
     <View style={styles.container}>
       {postSelected ? (
@@ -49,12 +65,18 @@ export default function Explorer() {
       ) : (
         <>
           <Searcher />
+
           <Selector
             type={"Search"}
             tabSelected={tabSelected}
             selectorHandler={setTabSelected}
           />
-          <PostList posts={renderedPosts} setPostSelected={setPostIdSelected} />
+
+          {tabSelected ? (
+            <FlatList contentContainerStyle={styles.scroll} data={channels} renderItem={renderItem} />
+          ) : (
+            <PostList posts={renderedPosts} setPostSelected={setPostIdSelected} />
+          )}
         </>
       )}
     </View>
