@@ -13,18 +13,20 @@ export default function Channels() {
 
     useEffect(
         () => {
-            getUserChannels().then(
-                (channels) => setChannels(channels)
-            ).catch(
-                (e) => console.log(e)
-            );
+            getUserChannels()
+                .then((channels) => setChannels(channels))
+                .catch((e) => console.log(e));
         },
         []
     );
 
+    function newChannelhandler () {
+        
+    }
+
     return (
         <View style={styles.container}>
-            <Pressable style={styles.button}>
+            <Pressable style={styles.button} onPress={newChannelhandler}>
                 <Image style={styles.newChannelIcon} source={PLUS} />
                 <Text style={styles.buttonText}>New Channel</Text>
             </Pressable>

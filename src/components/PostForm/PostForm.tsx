@@ -11,8 +11,9 @@ import {
 import { createPost } from "../../HTTP Requests/post";
 import { sessionId } from "../../HTTP Requests/general";
 import { ImageType, PostType } from "../../types";
-import { MultiSelect } from "react-native-element-dropdown";
+import { Dropdown } from "react-native-element-dropdown";
 import ImageSlider from "../ImageSlider/ImageSlider";
+import Ingredient from "./Ingredient";
 
 const PLUS = require('../../../assets/NEW_POST_IMAGE.png');
 
@@ -74,30 +75,35 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
       images={formData.images}
       setImages={setPostImages}
       width={0.88}
-    /></>;
+    />
+  </>;
+
+  const BUTTONS = <>
+    <View style={styles.buttons}>
+      <Pressable style={[styles.button, styles.cancelButton]}>
+        <Text style={styles.cancelButtonText}>Cancel</Text>
+      </Pressable>
+
+      <Pressable
+        style={[styles.button, styles.postButton]}
+        onPress={sendForm}
+      >
+        <Text style={styles.postButtonText}>Post</Text>
+      </Pressable>
+    </View>
+  </>;
 
   return (
     (!isText ? (
       <View style={styles.container}>
         {BASIC_FORM}
 
-        <View style={styles.buttons}>
-          <Pressable style={[styles.button, styles.cancelButton]}>
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </Pressable>
-
-          <Pressable
-            style={[styles.button, styles.postButton]}
-            onPress={sendForm}
-          >
-            <Text style={styles.postButtonText}>Post</Text>
-          </Pressable>
-        </View>
+        {BUTTONS}
       </View>
     ) : (
       <View style={styles.container}>
 
-        <MultiSelect
+        <Dropdown
           style={styles.dropdown}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
@@ -115,30 +121,29 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
             (newIngredient) => {
               setIngredients(
                 (previousIngredients) => {
-                  return [...previousIngredients, newIngredient];
+                  return [...previousIngredients, newIngredient.value];
                 }
               )
             }
           }
         />
 
+        {ingredients.length != 0 && (
+          <View style={styles.table}>
+            {ingredients.map((ingredient, index) => {
+              console.log(ingredient);
+              return <Ingredient ingredientName={ingredient} key={index} /> 
+            }
+            )}
+          </View>
+        )}
+
         <Pressable style={styles.newStepButton} >
           <Image style={styles.newStepIcon} source={PLUS} />
           <Text>Add New Step</Text>
         </Pressable>
 
-        <View style={styles.buttons}>
-          <Pressable style={[styles.button, styles.cancelButton]}>
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </Pressable>
-
-          <Pressable
-            style={[styles.button, styles.postButton]}
-            onPress={sendForm}
-          >
-            <Text style={styles.postButtonText}>Post</Text>
-          </Pressable>
-        </View>
+        {BUTTONS}
       </View>
     ))
   );
@@ -194,6 +199,12 @@ const styles = StyleSheet.create({
   newStepIcon: {
     height: 20,
     width: 20
+  },
+
+  table: {
+    borderWidth: 1,
+    backgroundColor: 'white',
+    marginVertical: 8
   },
 
 
