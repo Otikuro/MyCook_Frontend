@@ -27,6 +27,7 @@ export type PostType = {
 };
 export type RecipeType = PostType & {
   steps: StepType[];
+  ingredients: IngredientType[]
 };
 export type StepType = {
   title: string;
@@ -35,6 +36,16 @@ export type StepType = {
   images: ImageType[];
   method: string;
 };
+export type IngredientType ={
+  ingredient_id: number;
+  name: string;
+  quantity: number;
+  measurement: MeasurementType;
+}
+export type MeasurementType = {
+  measurement_id: number;
+  name: string;
+}
 export type UserType = {
   name: string;
   profilePic?: ImageType;
