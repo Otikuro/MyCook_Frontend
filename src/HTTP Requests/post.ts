@@ -37,11 +37,11 @@ export async function getPost(id: number): Promise<PostType> {
   return response.data.post as PostType;
 }
 
-export async function votePost(id: number, liked:boolean): Promise<PostType> {
+export async function votePost(id: number, liked: boolean): Promise<PostType> {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: server + endpoint + "vote/" + id+'/'+ (liked?1:0) + "?sessionId=" + sessionId,
+    url: server + endpoint + "vote/" + id + '/' + (liked ? 1 : 0) + "?sessionId=" + sessionId,
   };
   let response = await axios.request(config);
   return response.data.post as PostType;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   TextInput,
   View,
@@ -6,58 +6,43 @@ import {
   StyleSheet,
   Pressable,
   Platform,
-  Image
+  Image,
+  ScrollView
 } from "react-native";
 import { createPost } from "../../HTTP Requests/post";
 import { sessionId } from "../../HTTP Requests/general";
-import { ImageType, PostType } from "../../types";
+import { ImageType, PostType, RecipeType } from "../../types";
 import { Dropdown } from "react-native-element-dropdown";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import Ingredient from "./Ingredient";
+import { getAllIngredients } from "../../HTTP Requests/ingredient";
 
 const PLUS = require('../../../assets/NEW_POST_IMAGE.png');
-
-const data = [
-  { label: "Tomate", value: 'Tomate' },
-  { label: "Patata", value: 'Patata' },
-  { label: "Ajo", value: 'Ajo' },
-  { label: "Pera", value: 'Pera' },
-  { label: "Aceituna", value: 'Aceituna' },
+const DIFFICULTIES = [
+  { label: 'facil', value: 'facil' },
+  { label: 'medio', value: 'medio' },
+  { label: 'dificil', value: 'dificil' }
 ];
+let allIngredients;
+
+getAllIngredients()
+  .then(
+    (ingredients) => {
+      allIngredients = ingredients
+    }
+  )
+  .catch(e => console.log(e))
 
 export default function PostForm({ isText = true }: { isText: boolean }) {
   const [formData, setFormData] = useState<PostType>({
     title: "",
     body: "",
-    images: [],
+    images: []
   });
   const [ingredients, setIngredients] = useState([]);
 
-  function setPostImages(postImages: ImageType[]) {
-    setFormData({ ...formData, images: postImages });
-  }
-
-  function sendForm() {
-    let fd = new FormData();
-    fd.append('sessionId', sessionId);
-    fd.append("title", formData.title);
-    fd.append("description", formData.body);
-    formData.images.forEach((image) =>
-      //@ts-ignore
-      fd.append("images[]", {
-        name: image.image_id,
-        type: "image/jpeg",
-        uri:
-          Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
-      })
-    );
-
-    createPost(fd)
-      .then((response) => console.log('Post created'))
-      .catch((error) => console.log("e", error));
-  }
-
-  const BASIC_FORM = <><Text>Title</Text>
+  const BASIC_FORM = <>
+    <Text>Title</Text>
     <TextInput
       style={styles.input}
       value={formData.title}
@@ -86,12 +71,62 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
 
       <Pressable
         style={[styles.button, styles.postButton]}
-        onPress={sendForm}
+        onPress={isText ? sendPost : sendRecipe}
       >
         <Text style={styles.postButtonText}>Post</Text>
       </Pressable>
     </View>
   </>;
+
+  function deleteIngredientHandler(ingredientName) {
+    console.log(ingredients);
+    setIngredients((previousIngredients) => { return previousIngredients.filter(e => e !== ingredientName) });
+    console.log(ingredients);
+  }
+
+  function setPostImages(postImages: ImageType[]) {
+    setFormData({ ...formData, images: postImages });
+  }
+
+  function sendPost() {
+    let fd = new FormData();
+    fd.append('sessionId', sessionId);
+    fd.append("title", formData.title);
+    fd.append("description", formData.body);
+    formData.images.forEach((image) =>
+      //@ts-ignore
+      fd.append("images[]", {
+        name: image.image_id,
+        type: "image/jpeg",
+        uri:
+          Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
+      })
+    );
+
+    createPost(fd)
+      .then((response) => console.log('Post created'))
+      .catch((error) => console.log("e", error));
+  }
+
+  function sendRecipe() {
+    let fd = new FormData();
+    fd.append('sessionId', sessionId);
+    fd.append("title", formData.title);
+    fd.append("description", formData.body);
+    formData.images.forEach((image) =>
+      //@ts-ignore
+      fd.append("images[]", {
+        name: image.image_id,
+        type: "image/jpeg",
+        uri:
+          Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
+      })
+    );
+
+    createPost(fd)
+      .then((response) => console.log('Post created'))
+      .catch((error) => console.log("e", error));
+  }
 
   return (
     (!isText ? (
@@ -101,7 +136,33 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
         {BUTTONS}
       </View>
     ) : (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
+        {BASIC_FORM}
+
+        <Text>Duration</Text>
+        <TextInput
+          style={styles.input}
+          value={formData.duration}
+          inputMode="numeric"
+          onChangeText={(text) => setFormData({ ...formData, duration: text })}
+        />
+
+        <Text>Number of rations</Text>
+        <TextInput
+          style={styles.input}
+          value={formData.rations}
+          inputMode="numeric"
+          onChangeText={(text) => setFormData({ ...formData, rations: text })}
+        />
+
+        <Text>Difficulty</Text>
+        <Dropdown
+          mode="modal"
+          data={DIFFICULTIES}
+          labelField="label"
+          valueField="value"
+          onChange={(text) => setFormData({ ...formData, difficulty: text.value })}
+        />
 
         <Dropdown
           style={styles.dropdown}
@@ -111,19 +172,21 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
           iconStyle={styles.iconStyle}
           mode="modal"
           placeholder={"Ingredients"}
-          data={data}
+          data={allIngredients}
           labelField="label"
           valueField="value"
-          activeColor="red"
+          activeColor="lightgrey"
           search
           searchPlaceholder="Select the ingredients"
           onChange={
             (newIngredient) => {
-              setIngredients(
-                (previousIngredients) => {
-                  return [...previousIngredients, newIngredient.value];
-                }
-              )
+              if (!(ingredients.includes(newIngredient.value))) {
+                setIngredients(
+                  (previousIngredients) => {
+                    return [...previousIngredients, newIngredient.value];
+                  }
+                )
+              }
             }
           }
         />
@@ -131,8 +194,7 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
         {ingredients.length != 0 && (
           <View style={styles.table}>
             {ingredients.map((ingredient, index) => {
-              console.log(ingredient);
-              return <Ingredient ingredientName={ingredient} key={index} /> 
+              return <Ingredient key={index} ingredientName={ingredient} deleteIngredientHandler={deleteIngredientHandler} />
             }
             )}
           </View>
@@ -144,14 +206,13 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
         </Pressable>
 
         {BUTTONS}
-      </View>
+      </ScrollView >
     ))
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: "94%",
     alignItems: "center",
     backgroundColor: 'COLORS.lightestGrey',
     paddingVertical: '2%',

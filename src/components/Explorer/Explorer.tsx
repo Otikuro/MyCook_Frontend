@@ -29,21 +29,24 @@ export default function Explorer() {
         .catch(e => console.log(e))
   }, [postIdSelected])
 
-  useEffect(() => {
-    getAllPost()
-      .then((posts) => {
-        posts.forEach((post) => {
-          if (post.images)
-            post.images.forEach((image) => {
-              image.url = server + "api/image/" + image.url;
-            });
-        });
+  useEffect(
+    () => {
+      getAllPost()
+        .then((posts) => {
+          posts.forEach((post) => {
+            if (post.images)
+              post.images.forEach((image) => {
+                image.url = server + "api/image/" + image.url;
+              });
+          });
 
-        setRenderedPosts(posts);
+          setRenderedPosts(posts);
 
-      }).catch(e => console.log(e))
+        }).catch(e => console.log(e))
 
-  }, []);
+    },
+    []
+  );
 
   useEffect(
     () => {
