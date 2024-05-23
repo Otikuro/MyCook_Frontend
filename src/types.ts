@@ -26,7 +26,7 @@ export type PostType = {
   comments?: CommentType[];
 };
 export type RecipeType = PostType & {
-  duration: string;
+  duration: string|number;
   difficultity: string;
   quantity: number;
   steps: StepType[];
