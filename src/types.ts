@@ -27,7 +27,7 @@ export type PostType = {
 };
 export type RecipeType = PostType & {
   duration: string|number;
-  difficultity: string;
+  difficulty: string;
   quantity: number;
   steps: StepType[];
   recipe_ingredients: RecipeIngredientType[]
@@ -37,13 +37,11 @@ export type StepType = {
   description: string;
   time: number;
   images: ImageType[];
-  method: string;
+  method: MethodType;
 };
 export type IngredientType ={
   ingredient_id: number;
   name: string;
-  quantity: number;
-  measurement: MeasurementType;
 }
 export type MeasurementType = {
   measurement_id: number;
@@ -57,4 +55,8 @@ export type RecipeIngredientType = {
   quantity: number;
   ingredient: IngredientType;
   measurement: MeasurementType;
+}
+export type MethodType = {
+  method_id: number;
+  name: string;
 }
