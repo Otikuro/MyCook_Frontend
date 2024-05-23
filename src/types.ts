@@ -24,8 +24,9 @@ export type PostType = {
   user?: UserType;
   images?: ImageType[];
   comments?: CommentType[];
+  recipe?: RecipeType
 };
-export type RecipeType = PostType & {
+export type RecipeType = {
   duration: string|number;
   difficulty: string;
   quantity: number;
