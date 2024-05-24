@@ -33,7 +33,7 @@ export async function getPost(id: number): Promise<PostType> {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: server + endpoint + "get/" + id + "?sessionId=" + sessionId,
+    url: server + endpoint + "get/" + id,
   };
   let response = await axios.request(config);
   return response.data.post as PostType;
@@ -43,7 +43,7 @@ export async function votePost(id: number, liked: boolean): Promise<PostType> {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: server + endpoint + "vote/" + id + '/' + (liked ? 1 : 0) + "?sessionId=" + sessionId,
+    url: server + endpoint + "vote/" + id + '/' + (liked ? 1 : 0),
   };
   let response = await axios.request(config);
   return response.data.post as PostType;

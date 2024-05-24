@@ -5,9 +5,10 @@ import { PostType } from "../../types";
 import UserCollapsed from "../UserCollapsed/UserCollapsed";
 import Comment from "../Comment/Comment";
 import { useState } from "react";
-import { votePost } from "../../HTTP Requests/post";
+import { getPost, votePost } from "../../HTTP Requests/post";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { server } from "../../HTTP Requests/general";
+import Recipe from "../Recipe/Recipe";
 
 
 const USER_IMAGE = require("../../../assets/USER_IMAGE.png");
@@ -21,6 +22,7 @@ export default function Post({
   post: PostType;
   isPreviewed?: boolean;
 }) {
+
   const navigation = useNavigation();
   const route = useRoute();
   if (route.params && route.params.post) {
@@ -60,10 +62,12 @@ export default function Post({
     setRenderedVotes(renderedVotes + votesAdded)
   }
 
+  if(!isPreviewed)console.log(post)
+
   return (
-    <View style={styles.main}>
+    <ScrollView style={styles.main} contentContainerStyle={styles.second}>
       <View style={styles.container}>
-        <Pressable style={styles.body} onPress={()=>navigation.navigate('Post', {post:post})}>
+        <Pressable style={styles.body} onPress={isPreviewed?()=>getPost(post.post_id).then((post)=>navigation.navigate('Post', {post:post})):()=>{}}>
           <Text style={styles.title}>{post.title}</Text>
 
           <View style={styles.description}>
@@ -85,7 +89,7 @@ export default function Post({
           )}
         </Pressable>
 
-
+        {post.recipe && <Recipe recipe={post.recipe} />}
 
         <View style={styles.footer}>
           <UserCollapsed name={post.user.name} />
@@ -111,16 +115,18 @@ export default function Post({
           })}
         </ScrollView>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   main: {
+    width: '100%'
+  },
+  second:{
     paddingVertical: 8,
     flexDirection: "column",
     alignItems: "center",
-    width: '100%'
   },
   container: {
     width: '100%',

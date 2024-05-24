@@ -16,7 +16,8 @@ import { Dropdown } from "react-native-element-dropdown";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import Ingredient from "./Ingredient";
 import { getAllIngredients } from "../../HTTP Requests/ingredient";
-import { getAllMethods } from "../../HTTP Requests/method";
+import IngredientList from "./IngredientList";
+import { getAllMeasurements } from "../../HTTP Requests/measurement";
 
 const PLUS = require('../../../assets/NEW_POST_IMAGE.png');
 const DIFFICULTIES = [
@@ -28,12 +29,12 @@ const DIFFICULTIES = [
 export default function PostForm({ isText = true }: { isText: boolean }) {
   //Metodos
 
-  const [allMethods, setAllMethods] = useState([]);
+  const [allMeasurements, setAllMeasurements] = useState([]);
 
   useEffect(
     () => {
-      getAllMethods()
-        .then((methods) => setAllMethods(methods))
+      getAllMeasurements()
+        .then((measurements) => setAllMeasurements(measurements))
         .catch((e) => console.log(e));
     },[]
   );
@@ -220,12 +221,7 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
           }
         />
         {ingredients.length != 0 && (
-          <View style={styles.table}>
-            {ingredients.map((ingredient, index) => {
-              return <Ingredient key={index} ingredient={ingredient} allMethods={allMethods} deleteIngredientHandler={deleteIngredientHandler} />
-            }
-            )}
-          </View>
+          <IngredientList editable ingredients={ingredients} allMeasurements={allMeasurements} deleteIngredientHandler={deleteIngredientHandler}/>
         )}
 
         <Pressable style={styles.newStepButton} >

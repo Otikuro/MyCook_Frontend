@@ -20,19 +20,29 @@ export type PostType = {
   title: string;
   body: string;
   votes?: number;
-  voted?: 1|0|null; 
+  voted?: 1 | 0 | null;
   user?: UserType;
   images?: ImageType[];
   comments?: CommentType[];
   recipe?: RecipeType
 };
 export type RecipeType = {
-  duration: string|number;
+  duration: string | number;
   difficulty: string;
   quantity: number;
   steps: StepType[];
   recipe_ingredients: RecipeIngredientType[]
+  nutritionPer100g: NutritionalInfoType
 };
+export type NutritionalInfoType = {
+  calories:number,
+  carbohydrates:number,
+  sugars:number,
+  fat:number,
+  saturated:number,
+  protein:number,
+  salt:number
+}
 export type StepType = {
   title: string;
   description: string;
@@ -40,7 +50,7 @@ export type StepType = {
   images: ImageType[];
   method: MethodType;
 };
-export type IngredientType ={
+export type IngredientType = {
   ingredient_id: number;
   name: string;
 }
