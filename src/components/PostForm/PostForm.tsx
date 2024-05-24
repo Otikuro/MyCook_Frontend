@@ -28,17 +28,16 @@ const DIFFICULTIES = [
 export default function PostForm({ isText = true }: { isText: boolean }) {
   //Metodos
 
-  const [allMethods, setAllMethodss] = useState([]);
+  const [allMethods, setAllMethods] = useState([]);
 
   useEffect(
     () => {
       getAllMethods()
-        .then((methods) => setAllMethodss(methods))
+        .then((methods) => setAllMethods(methods))
         .catch((e) => console.log(e));
-    }
+    },[]
   );
 
-  console.log('variable' + allMethods)
 
 
   //Ingredientes
@@ -65,7 +64,24 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
     steps: [],
     recipe_ingredients: []
   });
+  function clear(){
+    setPostData({
+      title: "",
+      body: "",
+      images: []
+    })
+    setRecipeData({
+      duration: 0,
+      quantity: 0,
+      difficulty: '',
+      steps: [],
+      recipe_ingredients: []
+    }
+
+    )
+  }
   const [ingredients, setIngredients] = useState([]);
+  const [postCreated, setPostCreated] = useState(false);
 
   const BASIC_FORM = <>
     <Text>Title</Text>
@@ -91,8 +107,8 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
 
   const BUTTONS = <>
     <View style={styles.buttons}>
-      <Pressable style={[styles.button, styles.cancelButton]}>
-        <Text style={styles.cancelButtonText}>Cancel</Text>
+      <Pressable style={[styles.button, styles.cancelButton]} onPress={clear}>
+        <Text style={styles.cancelButtonText}>Clear</Text>
       </Pressable>
 
       <Pressable
@@ -105,9 +121,7 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
   </>;
 
   function deleteIngredientHandler(ingredient_id) {
-    console.log(ingredients);
     setIngredients((previousIngredients) => { return previousIngredients.filter(ingredient => ingredient.ingredient_id !== ingredient_id) });
-    console.log(ingredients);
   }
 
   function setPostImages(postImages: ImageType[]) {
@@ -129,24 +143,28 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
       })
     );
 
+    console.log('sendin')
+
     createPost(fd)
-      .then(() => console.log('Post created'))
-      .catch((error) => console.log("e", error));
+      .then(() => setPostCreated(true))
+      .catch((error) => console.log("e", JSON.stringify(error)));
   }
 
   function sendRecipe() {
-
+    sendPost()
   }
 
   return (
     (!isText ? (
       <View style={styles.container}>
+        {postCreated && (<Text style={{color: 'green'}}>Post Created!</Text>)}
         {BASIC_FORM}
 
         {BUTTONS}
       </View>
     ) : (
       <ScrollView contentContainerStyle={styles.container}>
+        {postCreated && (<Text style={{color: 'green'}}>Post Created!</Text>)}
         {BASIC_FORM}
 
         <Text>Duration</Text>

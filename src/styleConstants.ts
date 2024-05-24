@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { RecipeType } from './types';
 
 export const COLORS = { lightOrange: '#ffeccc', lightGrey: '#dddddd', lighterGray: '#eeeeee', lightestGrey: '#f5f5f5', postBorder: 'rgba(0, 0, 0, 0.33)' };
 
@@ -46,3 +47,32 @@ export const INITIAL_FORMS = StyleSheet.create({
         color: 'blue'
     }
 });
+
+export const sampleRecipe: RecipeType={
+    duration:9, 
+    difficulty:'medio', 
+    quantity:3,
+    recipe_ingredients: [{
+        ingredient:{
+            ingredient_id:1,
+            name: 'Tomato'
+        },
+        measurement:{
+            measurement_id:1,
+            name: 'grams'
+        },
+        quantity:100
+    }],
+    steps: [
+        {
+            description:'sample step',
+            images: [],
+            method: {
+                name: 'boiling',
+                method_id: 1
+            },
+            time: 10,
+            title: 'samble'
+        }
+    ]
+}

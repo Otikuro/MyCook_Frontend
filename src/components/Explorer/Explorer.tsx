@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { ChannelType, PostType, RecipeType } from "../../types";
 import { getAllPost, getPost } from "../../HTTP Requests/post";
@@ -9,60 +9,37 @@ import Selector from "../Selector/Selector";
 import Post from "../Post/Post";
 import PostList from "../PostList/PostList";
 import Channel from "../Channel/Channel";
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-const renderItem = ({ item }: { item: any }) => (<Channel title={item.name} />);
+const renderItem = ({ item }: { item: any }) => (<Channel channel={item} />);
 
 export default function Explorer() {
+  const navigation = useNavigation();
+
   const [tabSelected, setTabSelected] = useState(false);
-  const [postIdSelected, setPostIdSelected] = useState<number | undefined>();
-  const [postSelected, setPostSelected] = useState<undefined | PostType>();
-  const [renderedPosts, setRenderedPosts] = useState<
-    Array<PostType | RecipeType>
-  >([]);
+  const [renderedPosts, setRenderedPosts] = useState<Array<PostType>>([]);
   const [channels, setChannels] = useState<Array<ChannelType>>([]);
 
-  useEffect(() => {
-    console.log(postIdSelected)
-    if (postIdSelected != undefined)
-      getPost(postIdSelected)
-        .then(post => setPostSelected(post))
-        .catch(e => console.log(e))
-  }, [postIdSelected])
+
+  function reload(){
+    getAllPost()
+    .then((posts) => setRenderedPosts(posts))
+    .catch(e => console.log(e))
+    getAllChannels()
+    .then((channels) => setChannels(channels))
+    .catch((e) => console.log(e));
+  }
 
   useEffect(
     () => {
-      getAllPost()
-        .then((posts) => {
-          posts.forEach((post) => {
-            if (post.images)
-              post.images.forEach((image) => {
-                image.url = server + "api/image/" + image.url;
-              });
-          });
-
-          setRenderedPosts(posts);
-        })
-        .catch(e => console.log(e))
+      reload()
     },
     []
   );
 
-  useEffect(
-    () => {
-      getAllChannels()
-        .then((channels) => setChannels(channels))
-        .catch((e) => console.log(e));
-    },
-    []
-  );
 
   return (
     <View style={styles.container}>
-      {postSelected ? (
-        <Post
-          post={postSelected}
-        />
-      ) : (
         <>
           <Searcher />
 
@@ -75,10 +52,9 @@ export default function Explorer() {
           {tabSelected ? (
             <FlatList contentContainerStyle={styles.scroll} data={channels} renderItem={renderItem} />
           ) : (
-            <PostList posts={renderedPosts} setPostSelected={setPostIdSelected} />
+            <PostList posts={renderedPosts} onRefresh={reload}/>
           )}
         </>
-      )}
     </View>
   );
 }

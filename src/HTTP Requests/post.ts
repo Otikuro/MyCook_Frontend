@@ -11,6 +11,7 @@ export function createPost(fd: FormData) {
     data: fd,
   };
   //return axios.request(config);
+  console.log(fd)
   return fetch(config.url, {
     method: "POST",
     body: fd,
@@ -21,8 +22,9 @@ export async function getAllPost(): Promise<PostType[]> {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: server + endpoint + "all" + "?sessionId=" + sessionId,
+    url: server + endpoint + "all"
   };
+  console.log(config.url)
   let response = await axios.request(config);
   return response.data.posts as PostType[];
 }

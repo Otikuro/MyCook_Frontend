@@ -6,6 +6,8 @@ import UserCollapsed from "../UserCollapsed/UserCollapsed";
 import Comment from "../Comment/Comment";
 import { useState } from "react";
 import { votePost } from "../../HTTP Requests/post";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { server } from "../../HTTP Requests/general";
 
 
 const USER_IMAGE = require("../../../assets/USER_IMAGE.png");
@@ -15,13 +17,19 @@ const UP_ARROW_IMAGE = require("../../../assets/UP_ARROW_IMAGE.png");
 export default function Post({
   post,
   isPreviewed = false,
-  viewHandler,
 }: {
   post: PostType;
   isPreviewed?: boolean;
-  viewHandler?: () => void;
 }) {
-  //if (!isPreviewed) console.log(post)
+  const navigation = useNavigation();
+  const route = useRoute();
+  if (route.params && route.params.post) {
+    post = route.params.post;
+  }
+  if(isPreviewed && post.images){
+    const image = post.images[0]
+    post.images[0].url = image.url.includes('file:')?image.url: (image.url.includes('http')?image.url:server+'api/image/'+image.url)
+  }
   const [voted, setVoted] = useState<-1 | 0 | 1>((post.voted == null ? 0 : (post.voted == 0 ? -1 : 1)))
   const [renderedVotes, setRenderedVotes] = useState<number>(post.votes)
 
@@ -55,7 +63,7 @@ export default function Post({
   return (
     <View style={styles.main}>
       <View style={styles.container}>
-        <Pressable style={styles.body} onPress={viewHandler}>
+        <Pressable style={styles.body} onPress={()=>navigation.navigate('Post', {post:post})}>
           <Text style={styles.title}>{post.title}</Text>
 
           <View style={styles.description}>
