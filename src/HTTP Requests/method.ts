@@ -10,5 +10,8 @@ export async function getAllMethods(): Promise<MethodType[]> {
         url: server + endpoint + "all"
     };
     let response = await axios.request(config);
+
+    //console.log(response.data.methods)
+
     return response.data.methods as MethodType[];
 }

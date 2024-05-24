@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { createPost } from "../../HTTP Requests/post";
 import { sessionId } from "../../HTTP Requests/general";
-import { ImageType, PostType, RecipeType } from "../../types";
+import { ImageType, MethodType, PostType, RecipeType } from "../../types";
 import { Dropdown } from "react-native-element-dropdown";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import Ingredient from "./Ingredient";
@@ -27,16 +27,18 @@ const DIFFICULTIES = [
 
 export default function PostForm({ isText = true }: { isText: boolean }) {
   //Metodos
-  let allMethods: any = 0;
+
+  const [allMethods, setAllMethodss] = useState([]);
 
   useEffect(
     () => {
       getAllMethods()
-        .then((methods) => { allMethods = methods })
+        .then((methods) => setAllMethodss(methods))
         .catch((e) => console.log(e));
-    },
-    []
+    }
   );
+
+  console.log('variable' + allMethods)
 
 
   //Ingredientes
