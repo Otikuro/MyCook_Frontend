@@ -1,10 +1,13 @@
 import { Text, Pressable, Image, View, StyleSheet, TextInput } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import { IngredientType, MethodType } from "../../types";
 
-export default function Ingredient({ ingredientName, deleteIngredientHandler }: { ingredientName: string, deleteIngredientHandler: (ingredientName: string) => void }) {
+export default function Ingredient({ ingredient, allMethods, deleteIngredientHandler }: { ingredient: IngredientType, allMethods: MethodType[], deleteIngredientHandler: (ingredient_id: number) => void }) {
+    console.log(allMethods);
+    
     return (
         <View style={styles.row}>
-            <Text>{ingredientName}</Text>
+            <Text>{ingredient.name}</Text>
 
             <TextInput style={styles.input} />
 
@@ -16,23 +19,16 @@ export default function Ingredient({ ingredientName, deleteIngredientHandler }: 
                 iconStyle={styles.iconStyle}
                 mode="modal"
                 placeholder={"Ingredients"}
-                data={data}
-                labelField="label"
-                valueField="value"
+                data={allMethods}
+                labelField="name"
+                valueField="method_id"
                 activeColor="red"
                 search
                 searchPlaceholder="Select the ingredients"
-                onChange={
-                    (newIngredient) => {
-                        setIngredients(
-                            (previousIngredients) => {
-                                return [...previousIngredients, newIngredient.value];
-                            }
-                        )
-                    }
+                onChange={ () => {}
                 } /> */}
 
-            <Pressable onPress={() => deleteIngredientHandler(ingredientName)}>
+            <Pressable onPress={() => deleteIngredientHandler(ingredient.ingredient_id)}>
                 <Text>Borrar</Text>
                 <Image></Image>
             </Pressable>

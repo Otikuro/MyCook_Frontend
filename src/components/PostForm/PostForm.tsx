@@ -16,6 +16,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import Ingredient from "./Ingredient";
 import { getAllIngredients } from "../../HTTP Requests/ingredient";
+import { getAllMethods } from "../../HTTP Requests/method";
 
 const PLUS = require('../../../assets/NEW_POST_IMAGE.png');
 const DIFFICULTIES = [
@@ -23,21 +24,44 @@ const DIFFICULTIES = [
   { label: 'medio', value: 'medio' },
   { label: 'dificil', value: 'dificil' }
 ];
-let allIngredients;
-
-getAllIngredients()
-  .then(
-    (ingredients) => {
-      allIngredients = ingredients
-    }
-  )
-  .catch(e => console.log(e))
 
 export default function PostForm({ isText = true }: { isText: boolean }) {
-  const [formData, setFormData] = useState<PostType>({
+  //Metodos
+  let allMethods: any = 0;
+
+  useEffect(
+    () => {
+      getAllMethods()
+        .then((methods) => { allMethods = methods })
+        .catch((e) => console.log(e));
+    },
+    []
+  );
+
+
+  //Ingredientes
+  const [allIngredients, setAllIngredients] = useState([]);
+
+  useEffect(
+    () => {
+      getAllIngredients()
+        .then((ingredients) => setAllIngredients(ingredients))
+        .catch((e) => console.log(e));
+    },
+    []
+  );
+
+  const [postData, setPostData] = useState<PostType>({
     title: "",
     body: "",
     images: []
+  });
+  const [recipeData, setRecipeData] = useState<RecipeType>({
+    duration: 0,
+    quantity: 0,
+    difficulty: '',
+    steps: [],
+    recipe_ingredients: []
   });
   const [ingredients, setIngredients] = useState([]);
 
@@ -45,19 +69,19 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
     <Text>Title</Text>
     <TextInput
       style={styles.input}
-      value={formData.title}
-      onChangeText={(text) => setFormData({ ...formData, title: text })}
+      value={postData.title}
+      onChangeText={(text) => setPostData({ ...postData, title: text })}
     />
 
     <Text>Description</Text>
     <TextInput
       style={styles.input}
-      value={formData.body}
-      onChangeText={(text) => setFormData({ ...formData, body: text })}
+      value={postData.body}
+      onChangeText={(text) => setPostData({ ...postData, body: text })}
     />
 
     <ImageSlider
-      images={formData.images}
+      images={postData.images}
       setImages={setPostImages}
       width={0.88}
     />
@@ -78,22 +102,22 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
     </View>
   </>;
 
-  function deleteIngredientHandler(ingredientName) {
+  function deleteIngredientHandler(ingredient_id) {
     console.log(ingredients);
-    setIngredients((previousIngredients) => { return previousIngredients.filter(e => e !== ingredientName) });
+    setIngredients((previousIngredients) => { return previousIngredients.filter(ingredient => ingredient.ingredient_id !== ingredient_id) });
     console.log(ingredients);
   }
 
   function setPostImages(postImages: ImageType[]) {
-    setFormData({ ...formData, images: postImages });
+    setPostData({ ...postData, images: postImages });
   }
 
   function sendPost() {
     let fd = new FormData();
     fd.append('sessionId', sessionId);
-    fd.append("title", formData.title);
-    fd.append("description", formData.body);
-    formData.images.forEach((image) =>
+    fd.append("title", postData.title);
+    fd.append("description", postData.body);
+    postData.images.forEach((image) =>
       //@ts-ignore
       fd.append("images[]", {
         name: image.image_id,
@@ -104,28 +128,12 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
     );
 
     createPost(fd)
-      .then((response) => console.log('Post created'))
+      .then(() => console.log('Post created'))
       .catch((error) => console.log("e", error));
   }
 
   function sendRecipe() {
-    let fd = new FormData();
-    fd.append('sessionId', sessionId);
-    fd.append("title", formData.title);
-    fd.append("description", formData.body);
-    formData.images.forEach((image) =>
-      //@ts-ignore
-      fd.append("images[]", {
-        name: image.image_id,
-        type: "image/jpeg",
-        uri:
-          Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
-      })
-    );
 
-    createPost(fd)
-      .then((response) => console.log('Post created'))
-      .catch((error) => console.log("e", error));
   }
 
   return (
@@ -142,26 +150,27 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
         <Text>Duration</Text>
         <TextInput
           style={styles.input}
-          value={formData.duration}
+          value={String(recipeData.duration)}
           inputMode="numeric"
-          onChangeText={(text) => setFormData({ ...formData, duration: text })}
+          onChangeText={(text) => setRecipeData({ ...recipeData, duration: text })}
         />
 
         <Text>Number of rations</Text>
         <TextInput
           style={styles.input}
-          value={formData.rations}
+          value={String(recipeData.quantity)}
           inputMode="numeric"
-          onChangeText={(text) => setFormData({ ...formData, rations: text })}
+          onChangeText={(text) => setRecipeData({ ...recipeData, quantity: Number(text) })}
         />
 
-        <Text>Difficulty</Text>
         <Dropdown
+          style={styles.dropdown}
           mode="modal"
           data={DIFFICULTIES}
           labelField="label"
           valueField="value"
-          onChange={(text) => setFormData({ ...formData, difficulty: text.value })}
+          placeholder={"Difficulty"}
+          onChange={(text) => setRecipeData({ ...recipeData, difficulty: text.value })}
         />
 
         <Dropdown
@@ -171,30 +180,29 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           mode="modal"
-          placeholder={"Ingredients"}
           data={allIngredients}
-          labelField="label"
-          valueField="value"
+          labelField="name"
+          valueField="name"
+          placeholder={"Ingredients"}
           activeColor="lightgrey"
           search
           searchPlaceholder="Select the ingredients"
           onChange={
             (newIngredient) => {
-              if (!(ingredients.includes(newIngredient.value))) {
+              if (!(ingredients.includes(newIngredient))) {
                 setIngredients(
                   (previousIngredients) => {
-                    return [...previousIngredients, newIngredient.value];
+                    return [...previousIngredients, newIngredient];
                   }
                 )
               }
             }
           }
         />
-
         {ingredients.length != 0 && (
           <View style={styles.table}>
             {ingredients.map((ingredient, index) => {
-              return <Ingredient key={index} ingredientName={ingredient} deleteIngredientHandler={deleteIngredientHandler} />
+              return <Ingredient key={index} ingredient={ingredient} allMethods={allMethods} deleteIngredientHandler={deleteIngredientHandler} />
             }
             )}
           </View>
@@ -275,7 +283,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 12,
     elevation: 2,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    marginVertical: 8
   },
   placeholderStyle: {
     fontSize: 14

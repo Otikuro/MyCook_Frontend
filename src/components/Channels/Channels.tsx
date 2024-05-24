@@ -6,7 +6,7 @@ import Channel from "../Channel/Channel";
 
 const PLUS = require('../../../assets/NEW_POST_IMAGE.png');
 
-const renderItem = ({ item }: { item: any }) => (<Channel title={item.title} />);
+const renderItem = ({ item }: { item: any }) => (<Channel title={item.name} />);
 
 export default function Channels() {
     const [channels, setChannels] = useState<Array<ChannelType>>([]);

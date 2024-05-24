@@ -10,7 +10,7 @@ import Post from "../Post/Post";
 import PostList from "../PostList/PostList";
 import Channel from "../Channel/Channel";
 
-const renderItem = ({ item }: { item: any }) => (<Channel title={item.title} />);
+const renderItem = ({ item }: { item: any }) => (<Channel title={item.name} />);
 
 export default function Explorer() {
   const [tabSelected, setTabSelected] = useState(false);
@@ -41,20 +41,17 @@ export default function Explorer() {
           });
 
           setRenderedPosts(posts);
-
-        }).catch(e => console.log(e))
-
+        })
+        .catch(e => console.log(e))
     },
     []
   );
 
   useEffect(
     () => {
-      getAllChannels().then(
-        (channels) => setChannels(channels)
-      ).catch(
-        (e) => console.log(e)
-      );
+      getAllChannels()
+        .then((channels) => setChannels(channels))
+        .catch((e) => console.log(e));
     },
     []
   );
