@@ -4,9 +4,9 @@ import { NutritionalInfoType } from "../../types";
 export default function NutritionalInfo({info}: {info:NutritionalInfoType}){
     return(
         <View style={styles.container}>
-            {Object.keys(info).map((row)=>
+            {Object.keys(info).map((row, key)=>
                 {return(
-                <View style={styles.row}>
+                <View key={key} style={styles.row}>
                     <Text>{row}</Text>
                     <Text>{info[row]}</Text>
                 </View>);}
