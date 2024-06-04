@@ -32,7 +32,7 @@ export type RecipeType = {
   quantity: number;
   steps: StepType[];
   recipe_ingredients: RecipeIngredientType[]
-  nutritionPer100g: NutritionalInfoType
+  nutritionPer100g?: NutritionalInfoType
 };
 export type NutritionalInfoType = {
   calories:number,
