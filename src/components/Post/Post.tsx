@@ -10,7 +10,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { server } from "../../HTTP Requests/general";
 import Recipe from "../Recipe/Recipe";
 
-
 const USER_IMAGE = require("../../../assets/USER_IMAGE.png");
 const DOWN_ARROW_IMAGE = require("../../../assets/DOWN_ARROW_IMAGE.png");
 const UP_ARROW_IMAGE = require("../../../assets/UP_ARROW_IMAGE.png");

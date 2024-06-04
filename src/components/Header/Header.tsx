@@ -1,9 +1,20 @@
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Image, Text, View, StyleSheet, Pressable } from "react-native";
 
 const LOGO_IMAGE = require('../../../assets/LOGO_IMAGE.png');
 const USER_IMAGE = require('../../../assets/USER_IMAGE.png');
 
 export default function Header() {
+    const navigation = useNavigation();
+    const route = useRoute();
+
+    let logoutHandler =()=>{console.log('no va 2')}
+
+
+    if (route.params && route.params.logoutHandler) {
+        logoutHandler = route.params.logoutHandler;
+      }
+    
     return (
         <View style={styles.container}>
             <Pressable >
@@ -14,9 +25,10 @@ export default function Header() {
                 <Text style={styles.title}>MyCook</Text>
             </Pressable>
 
-            <Pressable >
+            {/* @ts-ignore */}
+            <Pressable onPress={() => navigation.navigate('User', {logoutHandler})}>
                 <Image style={styles.image} source={USER_IMAGE} />
-            </Pressable>
+            </Pressable> 
         </View>
     );
 }

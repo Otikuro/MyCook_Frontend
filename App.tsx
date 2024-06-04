@@ -15,9 +15,12 @@ import SignupForm from "./src/components/SignupForm/SignupForm";
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSigning, setIsSigning] = useState(false);
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [signupFailed, setsignupFailed] = useState(false);
 
   function loginHandler(username: string, password: string): void {
     function handleValidLogin(response: AxiosResponse) {
+      setIsLoggedIn(false);
       setSessionId(response.data.session);
       setIsLoggedIn(true);
       islogged().then((response) => console.log(response));
@@ -25,15 +28,17 @@ export default function App() {
 
     function handleInvalidLogin(error: AxiosError) {
       console.log(error.message);
+      setLoginFailed(true);
       setIsLoggedIn(false);
     }
-    
+
     login(username, password)
-    .then(handleValidLogin)
-    .catch(handleInvalidLogin);
+      .then(handleValidLogin)
+      .catch(handleInvalidLogin);
   }
 
   function logoutHandler() {
+    console.log('saliendo');
     setIsLoggedIn(false);
   }
 
@@ -42,10 +47,23 @@ export default function App() {
     formData.append('username', username);
     formData.append("email", email);
     formData.append("password", password);
-    
+
     register(formData)
-    .then((response) => console.log('User created: ' + response))
-    .catch((error) => console.log(error));
+      .then(
+        (response) => {
+          console.log('User created: ' + response);
+          /*           login(username, password)
+                    .then(handleValidLogin)
+                    .catch(handleInvalidLogin); */
+
+        }
+      )
+      .catch(
+        (error) => {
+          console.log(error);
+          setsignupFailed(true);
+        }
+      );
   }
 
   function changeFormHandler(): void {
@@ -65,15 +83,11 @@ export default function App() {
       <StatusBar />
 
       {isLoggedIn || true ? (
-        <>
-          <Header/>
-            
-          <Navigation/> 
-        </>
+        <Navigation logoutHandler={logoutHandler} />
       ) : isSigning ? (
-        <SignupForm signupHandler={signupHandler} changeFormHandler={changeFormHandler} />
+        <SignupForm signupFailed={signupFailed} signupHandler={signupHandler} changeFormHandler={changeFormHandler} />
       ) : (
-        <LoginForm loginHandler={loginHandler} changeFormHandler={changeFormHandler} />
+        <LoginForm loginFailed={loginFailed} loginHandler={loginHandler} changeFormHandler={changeFormHandler} />
       )}
     </>
   );

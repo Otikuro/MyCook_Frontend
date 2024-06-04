@@ -4,11 +4,11 @@ import { INITIAL_FORMS } from '../../styleConstants';
 
 const LOGO_IMAGE = require('../../../assets/LOGO_IMAGE.png');
 
-export default function SignupForm({ changeFormHandler, signupHandler }: { changeFormHandler: () => void, signupHandler: (username: string, email: string, password: string) => void }) {
+export default function SignupForm({ signupFailed, changeFormHandler, signupHandler }: { signupFailed: boolean, changeFormHandler: () => void, signupHandler: (username: string, email: string, password: string) => void }) {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
+
     return (
         <View style={INITIAL_FORMS.container}>
             <Image source={LOGO_IMAGE} style={INITIAL_FORMS.image} />
@@ -17,16 +17,23 @@ export default function SignupForm({ changeFormHandler, signupHandler }: { chang
 
             <View style={INITIAL_FORMS.form}>
                 <Text>User</Text>
-                <TextInput style={INITIAL_FORMS.input} value={username} onChangeText={setUsername}/>
+                <TextInput style={INITIAL_FORMS.input} value={username} onChangeText={setUsername} />
 
                 <Text>Email</Text>
-                <TextInput style={INITIAL_FORMS.input} value={email} onChangeText={setEmail}/>
+                <TextInput style={INITIAL_FORMS.input} value={email} onChangeText={setEmail} />
 
                 <Text>Password</Text>
-                <TextInput style={INITIAL_FORMS.input} value={password} onChangeText={setPassword}/>
+                <TextInput style={INITIAL_FORMS.input} value={password} onChangeText={setPassword} />
 
-{/*                 <Text>Repeat your password</Text>
+                {/*                 <Text>Repeat your password</Text>
                 <TextInput style={INITIAL_FORMS.input} /> */}
+
+                { signupFailed  &&
+                    <View style={[{ marginBottom: 10 }, { alignItems: 'center' }]}>
+                        <Text style={{ color: 'red' }}>Incorrect username or password.</Text>
+                        <Text style={{ color: 'red' }}>Please try again.</Text>
+                    </View>
+                }
 
                 <Pressable style={INITIAL_FORMS.button} onPress={() => signupHandler(username, email, password)}>
                     <Text>Create account</Text>

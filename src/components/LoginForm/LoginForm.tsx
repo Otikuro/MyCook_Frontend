@@ -4,7 +4,7 @@ import { INITIAL_FORMS } from '../../styleConstants';
 
 const LOGO_IMAGE = require('../../../assets/LOGO_IMAGE.png');
 
-export default function LoginForm({ loginHandler, changeFormHandler }: { loginHandler: (user: string, password: string) => void, changeFormHandler: () => void }) {
+export default function LoginForm({ loginFailed, loginHandler, changeFormHandler }: { loginFailed: boolean, loginHandler: (user: string, password: string) => void, changeFormHandler: () => void }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -29,6 +29,13 @@ export default function LoginForm({ loginHandler, changeFormHandler }: { loginHa
                     onChangeText={setPassword}
                     secureTextEntry={true}
                 />
+
+                { loginFailed &&
+                    <View style={[{ marginBottom: 10 }, { alignItems: 'center' }]}>
+                        <Text style={{ color: 'red' }}>Incorrect username or password.</Text>
+                        <Text style={{ color: 'red' }}>Please try again.</Text>
+                    </View>
+                }
 
                 <Pressable onPress={() => loginHandler(username, password)} style={INITIAL_FORMS.button}>
                     <Text>Log in</Text>
