@@ -13,6 +13,7 @@ export function login(username: string, password: string) {
     },
     data: JSON.stringify({ username: username, password: password })
   };
+  console.log(config.url)
   return axios.request(config)
 }
 
@@ -34,6 +35,7 @@ export function islogged() {
     maxBodyLength: Infinity,
     url: server + endpoint + 'logged/sessionId=' + sessionId,
   };
+  console.log(config.url)
   return axios.request(config)
 }
 
@@ -44,6 +46,7 @@ export function register(formData) {
     url: server + endpoint + "register",
     data: formData,
   };
+  
   //return axios.request(config);
   return fetch(config.url, {
     method: "POST",

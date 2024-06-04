@@ -1,17 +1,24 @@
+import { useRoute } from "@react-navigation/native";
 import { View, Image, Text, Pressable, StyleSheet } from "react-native";
+import { LogOutHandlerContext } from "../../Contexts/LogoutHandlerContext";
 
 const USER_IMAGE = require('../../../assets/USER_IMAGE.png');
 
-export default function User ({logoutHandler}: {logoutHandler: () => void}) {
+export default function User() {
+    const route = useRoute();
+    
+
     return (
         <View style={styles.container}>
             <Image style={styles.image} source={USER_IMAGE} />
 
             <Text style={styles.nickname}>Nombre de usuario</Text>
-
-            <Pressable onPress={logoutHandler}>
-                <Text>Logout</Text>
-            </Pressable>
+            <LogOutHandlerContext.Consumer>
+            {logoutHandler =>
+                <Pressable onPress={logoutHandler}>
+                    <Text>Logout</Text>
+                </Pressable>}
+            </LogOutHandlerContext.Consumer>
         </View>
     );
 }
