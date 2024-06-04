@@ -22,7 +22,7 @@ const ICONS = {
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-export default function Navigation({ logoutHandler }: { logoutHandler: () => void }) {
+export default function Navigation() {
     return (
         <NavigationContainer>
             <Stack.Navigator >
@@ -30,7 +30,6 @@ export default function Navigation({ logoutHandler }: { logoutHandler: () => voi
                     name="MainTabs"
                     component={TabNavigator}
                     options={{ headerShown: false }}
-                    initialParams={{logoutHandler: logoutHandler}}
                 />
                 <Stack.Screen
                     name="Channel"
@@ -50,10 +49,6 @@ export default function Navigation({ logoutHandler }: { logoutHandler: () => voi
 }
 
 function TabNavigator({logoutHandler}: {logoutHandler: ()=>void}) {
-    const navigation = useNavigation();
-    //@ts-ignore
-    navigation.setOptions({logoutHandler: logoutHandler})
-    
     return (
         <Tab.Navigator
             initialRouteName='Explorer'

@@ -6,15 +6,7 @@ const USER_IMAGE = require('../../../assets/USER_IMAGE.png');
 
 export default function Header() {
     const navigation = useNavigation();
-    const route = useRoute();
 
-    let logoutHandler =()=>{console.log('no va 2')}
-
-
-    if (route.params && route.params.logoutHandler) {
-        logoutHandler = route.params.logoutHandler;
-      }
-    
     return (
         <View style={styles.container}>
             <Pressable >
@@ -26,7 +18,7 @@ export default function Header() {
             </Pressable>
 
             {/* @ts-ignore */}
-            <Pressable onPress={() => navigation.navigate('User', {logoutHandler})}>
+            <Pressable onPress={() => navigation.navigate('User')}>
                 <Image style={styles.image} source={USER_IMAGE} />
             </Pressable> 
         </View>

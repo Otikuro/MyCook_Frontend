@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { StatusBar } from "react-native";
 import { islogged, login, register } from "./src/HTTP Requests/auth";
 import {
@@ -7,10 +7,11 @@ import {
   setSessionId,
 } from "./src/HTTP Requests/general";
 import { AxiosError, AxiosResponse } from "axios";
-import Header from './src/components/Header/Header';
 import Navigation from './src/components/Navigation/Navigation';
 import LoginForm from "./src/components/LoginForm/LoginForm";
 import SignupForm from "./src/components/SignupForm/SignupForm";
+import { LogOutHandlerContext } from "./src/Contexts/LogoutHandlerContext";
+
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -79,16 +80,16 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <LogOutHandlerContext.Provider value={logoutHandler}>
       <StatusBar />
 
-      {isLoggedIn || true ? (
-        <Navigation logoutHandler={logoutHandler} />
+      {isLoggedIn  ? (
+        <Navigation/>
       ) : isSigning ? (
         <SignupForm signupFailed={signupFailed} signupHandler={signupHandler} changeFormHandler={changeFormHandler} />
       ) : (
         <LoginForm loginFailed={loginFailed} loginHandler={loginHandler} changeFormHandler={changeFormHandler} />
       )}
-    </>
+    </LogOutHandlerContext.Provider>
   );
 }
