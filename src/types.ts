@@ -2,7 +2,8 @@ export type ChannelType = {
   channel_id: number,
   name: string,
   is_public: boolean,
-  open_posting: boolean
+  open_posting: boolean,
+  amIMember?: boolean
 };
 export type CommentType = {
   comment_id: number,

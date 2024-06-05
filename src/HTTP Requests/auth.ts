@@ -22,9 +22,6 @@ export function logout() {
     method: 'get',
     maxBodyLength: Infinity,
     url: server + endpoint + 'logout',
-    headers: {
-      'Cookie': 'hola=1'
-    }
   };
   return axios.request(config)
 }
