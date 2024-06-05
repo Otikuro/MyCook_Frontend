@@ -1,11 +1,11 @@
-import { View, Text, Image, StyleSheet, Pressable, ScrollView } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable, ScrollView, TextInput } from "react-native";
 import { COLORS } from "../../styleConstants";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import { PostType } from "../../types";
 import UserCollapsed from "../UserCollapsed/UserCollapsed";
 import Comment from "../Comment/Comment";
 import { useState } from "react";
-import { getPost, votePost } from "../../HTTP Requests/post";
+import { commentPost, getPost, votePost } from "../../HTTP Requests/post";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { server } from "../../HTTP Requests/general";
 import Recipe from "../Recipe/Recipe";
@@ -15,27 +15,39 @@ const DOWN_ARROW_IMAGE = require("../../../assets/DOWN_ARROW_IMAGE.png");
 const UP_ARROW_IMAGE = require("../../../assets/UP_ARROW_IMAGE.png");
 
 export default function Post({
-  post,
+  inputPost,
   isPreviewed = false,
 }: {
-  post: PostType;
+  inputPost: PostType;
   isPreviewed?: boolean;
 }) {
 
   const navigation = useNavigation();
   const route = useRoute();
 
+  //@ts-ignore
   if (route.params && route.params.post) {
-    post = route.params.post;
-  }
 
-  if (isPreviewed && post.images && post.images[0]) {
+    //@ts-ignore
+    inputPost = route.params.post;
+  }
+  const [post,setPost] = useState(inputPost)
+
+  if(isPreviewed && post.images && post.images[0]){
     const image = post.images[0]
     post.images[0].url = image.url.includes('file:') ? image.url : (image.url.includes('http') ? image.url : server + 'api/image/' + image.url)
   }
+  
 
+  
   const [voted, setVoted] = useState<-1 | 0 | 1>((post.voted == null ? 0 : (post.voted == 0 ? -1 : 1)))
   const [renderedVotes, setRenderedVotes] = useState<number>(post.votes)
+
+  function reload(){
+    getPost(post.post_id)
+    .then(post=>setPost(post))
+  }
+
 
   function vote(liked: boolean) {
     let lastVoted = voted
@@ -54,13 +66,13 @@ export default function Post({
       votesAdded *= -1
     } else {
       setVoted(newVoted == 1 ? 1 : -1)
-      votePost(post.post_id, liked)
-        .then(r => console.log(r))
-        .catch(e => console.log(e))
     }
     if (lastVoted == newVoted * -1) {
       votesAdded *= 2
     }
+    votePost(post.post_id, liked)
+        .then(r => console.log(r))
+        .catch(e => console.log(e))
     setRenderedVotes(renderedVotes + votesAdded)
   }
 
@@ -69,7 +81,9 @@ export default function Post({
   return (
     <ScrollView style={styles.main} contentContainerStyle={styles.second}>
       <View style={styles.container}>
-        <Pressable style={styles.body} onPress={isPreviewed ? () => getPost(post.post_id).then((post) => navigation.navigate('Post', { post: post })) : () => { }}>
+    {/* @ts-ignore */}
+
+        <Pressable style={styles.body} onPress={isPreviewed?()=>getPost(post.post_id).then((post)=>navigation.navigate('Post', {post:post})):()=>{}}>
           <Text style={styles.title}>{post.title}</Text>
 
           <View style={styles.description}>
@@ -110,6 +124,8 @@ export default function Post({
         </View>
       </View>
 
+      {!isPreviewed && <CommentForm post_id={post.post_id} reload={reload}/>}
+
       {post.comments != undefined && (
         <ScrollView style={styles.scroll} >
           {!isPreviewed && post.comments.map((comment, index) => {
@@ -119,6 +135,31 @@ export default function Post({
       )}
     </ScrollView>
   );
+}
+function CommentForm({post_id, reload}){
+  const [commentName,setCommentBody] = useState('')
+  function createCommentHandler(){
+      commentPost(commentName, post_id)
+      .then((message)=>{
+          console.log(message.data)
+          setCommentBody('')
+          reload()
+      })
+      
+  }
+  return(
+      <View style={[styles.container, styles.second]}>
+          <Text style={{alignSelf: 'flex-start'}}>New comment:</Text>
+          <TextInput
+              style={styles.input}
+              value={commentName}
+              onChangeText={setCommentBody}
+          />
+          <Pressable onPress={createCommentHandler} style={styles.button}>
+              <Text>Submit Comment</Text>
+          </Pressable>
+      </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -189,5 +230,17 @@ const styles = StyleSheet.create({
   },
   scroll: {
     width: '100%'
+  },
+  input: {
+    width: "100%",
+    borderRadius: 8,
+    marginVertical: 8,
+    backgroundColor: "#ffffff",
+  },
+  button: {
+    borderRadius: 8,
+    flexGrow: 1,
+    padding: 6,
+    backgroundColor: "#FFAE27",
   }
 });

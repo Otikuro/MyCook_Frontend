@@ -19,7 +19,7 @@ export default function PostList({
   const renderItem = ({ item }: { item: PostType }) => {
     return (
     <Post
-      post={item}
+      inputPost={item}
       isPreviewed
       key={item.post_id}
     />

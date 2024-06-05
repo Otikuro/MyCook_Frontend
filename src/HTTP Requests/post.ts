@@ -29,6 +29,28 @@ export async function getAllPost(): Promise<PostType[]> {
   return response.data.posts as PostType[];
 }
 
+export async function getLikedBy(): Promise<PostType[]> {
+  let config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: server + endpoint + "likedBy"
+  };
+  console.log(config.url)
+  let response = await axios.request(config);
+  return response.data.posts as PostType[];
+}
+
+export async function getPostedBy(): Promise<PostType[]> {
+  let config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: server + endpoint + "postedBy"
+  };
+  console.log(config.url)
+  let response = await axios.request(config);
+  return response.data.posts as PostType[];
+}
+
 export async function getPost(id: number): Promise<PostType> {
   let config = {
     method: "get",
@@ -58,6 +80,23 @@ export async function votePost(id: number, liked: boolean): Promise<PostType> {
     maxBodyLength: Infinity,
     url: server + endpoint + "vote/" + id + '/' + (liked ? 1 : 0),
   };
+  console.log(config.url)
   let response = await axios.request(config);
+  console.log(response.data)
   return response.data.post as PostType;
+}
+
+export function commentPost(body: string, post_id: number) {
+  let config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: server + endpoint + 'comment/' + post_id,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': '*/*'
+    },
+    data: JSON.stringify({ body: body})
+  };
+  console.log(config.url)
+  return axios.request(config)
 }
