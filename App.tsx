@@ -84,7 +84,7 @@ export default function App() {
     <LogOutHandlerContext.Provider value={logoutHandler}>
       <StatusBar />
 
-      {isLoggedIn || true  ? (
+      {isLoggedIn ? (
         <Navigation/>
       ) : isSigning ? (
         <SignupForm signupFailed={signupFailed} signupHandler={signupHandler} changeFormHandler={changeFormHandler} />
