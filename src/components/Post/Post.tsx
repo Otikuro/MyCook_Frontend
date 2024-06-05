@@ -24,13 +24,16 @@ export default function Post({
 
   const navigation = useNavigation();
   const route = useRoute();
+
   if (route.params && route.params.post) {
     post = route.params.post;
   }
-  if(isPreviewed && post.images){
+
+  if (isPreviewed && post.images && post.images[0]) {
     const image = post.images[0]
-    post.images[0].url = image.url.includes('file:')?image.url: (image.url.includes('http')?image.url:server+'api/image/'+image.url)
+    post.images[0].url = image.url.includes('file:') ? image.url : (image.url.includes('http') ? image.url : server + 'api/image/' + image.url)
   }
+
   const [voted, setVoted] = useState<-1 | 0 | 1>((post.voted == null ? 0 : (post.voted == 0 ? -1 : 1)))
   const [renderedVotes, setRenderedVotes] = useState<number>(post.votes)
 
@@ -61,12 +64,12 @@ export default function Post({
     setRenderedVotes(renderedVotes + votesAdded)
   }
 
-  if(!isPreviewed)console.log(post)
+  if (!isPreviewed) console.log(post)
 
   return (
     <ScrollView style={styles.main} contentContainerStyle={styles.second}>
       <View style={styles.container}>
-        <Pressable style={styles.body} onPress={isPreviewed?()=>getPost(post.post_id).then((post)=>navigation.navigate('Post', {post:post})):()=>{}}>
+        <Pressable style={styles.body} onPress={isPreviewed ? () => getPost(post.post_id).then((post) => navigation.navigate('Post', { post: post })) : () => { }}>
           <Text style={styles.title}>{post.title}</Text>
 
           <View style={styles.description}>
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
   main: {
     width: '100%'
   },
-  second:{
+  second: {
     paddingVertical: 8,
     flexDirection: "column",
     alignItems: "center",

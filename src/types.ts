@@ -30,7 +30,7 @@ export type RecipeType = {
   duration: string | number;
   difficulty: string;
   quantity: number;
-  steps: StepType[];
+  steps?: StepType[];
   recipe_ingredients: RecipeIngredientType[]
   nutritionPer100g?: NutritionalInfoType
 };
@@ -63,8 +63,8 @@ export type UserType = {
   profilePic?: ImageType;
 };
 export type RecipeIngredientType = {
-  quantity: number;
   ingredient: IngredientType;
+  quantity: number;
   measurement: MeasurementType;
 }
 export type MethodType = {

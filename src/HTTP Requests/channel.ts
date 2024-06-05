@@ -10,6 +10,7 @@ export async function getAllChannels(): Promise<ChannelType[]> {
       maxBodyLength: Infinity,
       url: server + endpoint + 'all/'
     };
+    console.log(config.url);
     let response = await axios.request(config);
     return response.data.channels as ChannelType[];
 }

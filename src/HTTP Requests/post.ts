@@ -24,7 +24,7 @@ export async function getAllPost(): Promise<PostType[]> {
     maxBodyLength: Infinity,
     url: server + endpoint + "all"
   };
-  console.log(config.url)
+  console.log(config.url);
   let response = await axios.request(config);
   return response.data.posts as PostType[];
 }
@@ -35,8 +35,21 @@ export async function getPost(id: number): Promise<PostType> {
     maxBodyLength: Infinity,
     url: server + endpoint + "get/" + id,
   };
+  console.log(config.url);
   let response = await axios.request(config);
   return response.data.post as PostType;
+}
+
+export async function getPostLike(title: string): Promise<PostType[]> {
+  let config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: server + endpoint + "like/" + title,
+  };
+  console.log(config.url);
+  let response = await axios.request(config);
+  console.log(response.data.posts)
+  return response.data.posts as PostType[];
 }
 
 export async function votePost(id: number, liked: boolean): Promise<PostType> {

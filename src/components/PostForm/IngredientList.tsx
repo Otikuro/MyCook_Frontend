@@ -1,25 +1,32 @@
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import { IngredientType, MeasurementType, MethodType, RecipeIngredientType } from "../../types";
 import Ingredient from "./Ingredient";
 
-export default function IngredientList({ editable, ingredients, allMeasurements, deleteIngredientHandler }: { editable: boolean, ingredients: RecipeIngredientType[], allMeasurements?: MeasurementType[], deleteIngredientHandler?: (ingredient_id: number) => void }) {
+export default function IngredientList({ editable, recipeIngredients, setRecipeIngredients, allMeasurements, deleteIngredientHandler }: { editable: boolean, recipeIngredients: any, setRecipeIngredients?: any, allMeasurements?: MeasurementType[], deleteIngredientHandler?: (ingredient_id: number) => void }) {
+   //console.log(recipeIngredients); 
+    
     return (
         <View style={styles.table}>
             <View style={styles.row}>
-                <TextInput style={styles.input} editable={false} value='Name' />
+                <Text style={styles.input}>Name</Text>
+                <Text style={styles.input}>Quantity</Text>
+                <Text style={styles.input}>Measurement</Text>
+                <View style={styles.input}/>
 
-                <TextInput style={styles.input} editable={editable} value='Quantity' />
 
-                <TextInput style={styles.input} editable={editable} value='Measure' />
-
-                {editable && <TextInput style={styles.input} />}
+{/*                 
+                Esto para que era??
+                {editable &&
+                    <TextInput style={styles.input} />
+                } */}
             </View>
-            {ingredients.map((ingredient, index) => {
-                return <Ingredient editable={editable} key={index} ingredient={ingredient} allMeasurements={allMeasurements} deleteIngredientHandler={deleteIngredientHandler} />
-            }
-            )}
-        </View>
 
+            {recipeIngredients.map(
+                (ingredient, index: number) => {
+                    return <Ingredient editable={editable} key={index} arrayPosition={index} ingredient={ingredient} setRecipeIngredients={setRecipeIngredients}  allMeasurements={allMeasurements} deleteIngredientHandler={deleteIngredientHandler} />
+                }
+            )} 
+        </View>
     )
 }
 
@@ -28,7 +35,8 @@ const styles = StyleSheet.create({
         width: '100%',
         borderWidth: 1,
         backgroundColor: 'white',
-        marginVertical: 8
+        marginTop: 8,
+        marginBottom: 16
     },
     row: {
         flexDirection: 'row',
@@ -37,7 +45,7 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: 'black',
-        width: '33.3%',
+        width: '25%',
         textAlign: 'center',
         color: 'black'
     }

@@ -53,6 +53,7 @@ export default function App() {
       .then(
         (response) => {
           console.log('User created: ' + response);
+          setsignupFailed(false);
           /*           login(username, password)
                     .then(handleValidLogin)
                     .catch(handleInvalidLogin); */
@@ -83,7 +84,7 @@ export default function App() {
     <LogOutHandlerContext.Provider value={logoutHandler}>
       <StatusBar />
 
-      {isLoggedIn  ? (
+      {isLoggedIn || true  ? (
         <Navigation/>
       ) : isSigning ? (
         <SignupForm signupFailed={signupFailed} signupHandler={signupHandler} changeFormHandler={changeFormHandler} />

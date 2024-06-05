@@ -18,7 +18,7 @@ export default function NewPost() {
         selectorHandler={selectorHandler}
       />
 
-      <PostForm isText={selected} /> 
+      <PostForm isRecipe={selected} /> 
     </View>
   );
 }

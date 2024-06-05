@@ -15,6 +15,7 @@ export default function PostList({
   if (route.params && route.params.posts) {
     posts = route.params.posts;
   }
+  
   const renderItem = ({ item }: { item: PostType }) => {
     return (
     <Post

@@ -14,7 +14,6 @@ import { sessionId } from "../../HTTP Requests/general";
 import { ImageType, MethodType, PostType, RecipeType } from "../../types";
 import { Dropdown } from "react-native-element-dropdown";
 import ImageSlider from "../ImageSlider/ImageSlider";
-import Ingredient from "./Ingredient";
 import { getAllIngredients } from "../../HTTP Requests/ingredient";
 import IngredientList from "./IngredientList";
 import { getAllMeasurements } from "../../HTTP Requests/measurement";
@@ -26,33 +25,7 @@ const DIFFICULTIES = [
   { label: 'dificil', value: 'dificil' }
 ];
 
-export default function PostForm({ isText = true }: { isText: boolean }) {
-  //Metodos
-
-  const [allMeasurements, setAllMeasurements] = useState([]);
-
-  useEffect(
-    () => {
-      getAllMeasurements()
-        .then((measurements) => setAllMeasurements(measurements))
-        .catch((e) => console.log(e));
-    },[]
-  );
-
-
-
-  //Ingredientes
-  const [allIngredients, setAllIngredients] = useState([]);
-
-  useEffect(
-    () => {
-      getAllIngredients()
-        .then((ingredients) => setAllIngredients(ingredients))
-        .catch((e) => console.log(e));
-    },
-    []
-  );
-
+export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
   const [postData, setPostData] = useState<PostType>({
     title: "",
     body: "",
@@ -65,23 +38,9 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
     steps: [],
     recipe_ingredients: []
   });
-  function clear(){
-    setPostData({
-      title: "",
-      body: "",
-      images: []
-    })
-    setRecipeData({
-      duration: 0,
-      quantity: 0,
-      difficulty: '',
-      steps: [],
-      recipe_ingredients: []
-    }
-
-    )
-  }
-  const [ingredients, setIngredients] = useState([]);
+  const [allMeasurements, setAllMeasurements] = useState([]);
+  const [allIngredients, setAllIngredients] = useState([]);
+  const [recipeIngredients, setRecipeIngredients] = useState([]);
   const [postCreated, setPostCreated] = useState(false);
 
   const BASIC_FORM = <>
@@ -114,15 +73,52 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
 
       <Pressable
         style={[styles.button, styles.postButton]}
-        onPress={isText ? sendPost : sendRecipe}
+        onPress={isRecipe ? sendRecipe : sendPost}
       >
         <Text style={styles.postButtonText}>Post</Text>
       </Pressable>
     </View>
   </>;
 
+  //Recover all measurement units in DB
+  useEffect(
+    () => {
+      getAllMeasurements()
+        .then((measurements) => {
+          setAllMeasurements(measurements)
+        })
+        .catch((e) => console.log(e));
+    }, []
+  );
+
+  //Recover all ingredients in DB
+  useEffect(
+    () => {
+      getAllIngredients()
+        .then((ingredients) => setAllIngredients(ingredients))
+        .catch((e) => console.log(e));
+    },
+    []
+  );
+
+  function clear() {
+    setPostData({
+      title: "",
+      body: "",
+      images: []
+    })
+    setRecipeData({
+      duration: 0,
+      quantity: 0,
+      difficulty: '',
+      steps: [],
+      recipe_ingredients: []
+    }
+    )
+  }
+
   function deleteIngredientHandler(ingredient_id) {
-    setIngredients((previousIngredients) => { return previousIngredients.filter(ingredient => ingredient.ingredient_id !== ingredient_id) });
+    setRecipeIngredients((previousIngredients) => { return previousIngredients.filter(ingredient => ingredient.ingredient.ingredient_id !== ingredient_id) });
   }
 
   function setPostImages(postImages: ImageType[]) {
@@ -144,28 +140,39 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
       })
     );
 
-    console.log('sendin')
+    console.log('Sending post')
 
     createPost(fd)
       .then(() => setPostCreated(true))
-      .catch((error) => console.log("e", JSON.stringify(error)));
+      .catch((error) => console.log("Error", JSON.stringify(error))); 
   }
 
+  //Crear receta, codigo repetido con crear post
   function sendRecipe() {
-    sendPost()
+    let fd = new FormData();
+    fd.append("title", postData.title);
+    fd.append("description", postData.body);
+    //@ts-ignore
+    fd.append('recipe', JSON.stringify({duration: recipeData.duration, difficulty: recipeData.difficulty, quantity: recipeData.quantity, recipeIngredidents: recipeIngredients, steps: []}));
+
+    console.log('sending recipe')
+
+    createPost(fd)
+      .then(() => setPostCreated(true))
+      .catch((error) => console.log("Error", JSON.stringify(error))); 
   }
 
   return (
-    (!isText ? (
+    (!isRecipe ? (
       <View style={styles.container}>
-        {postCreated && (<Text style={{color: 'green'}}>Post Created!</Text>)}
+        {postCreated && (<Text style={{ color: 'green' }}>Post Created!</Text>)}
         {BASIC_FORM}
 
         {BUTTONS}
       </View>
     ) : (
       <ScrollView contentContainerStyle={styles.container}>
-        {postCreated && (<Text style={{color: 'green'}}>Post Created!</Text>)}
+        {postCreated && (<Text style={{ color: 'green' }}>Post Created!</Text>)}
         {BASIC_FORM}
 
         <Text>Duration</Text>
@@ -210,18 +217,20 @@ export default function PostForm({ isText = true }: { isText: boolean }) {
           searchPlaceholder="Select the ingredients"
           onChange={
             (newIngredient) => {
-              if (!(ingredients.includes(newIngredient))) {
-                setIngredients(
+              //No funciona permite ingredientes duplicados
+              if (!(recipeIngredients.includes(newIngredient))) {
+                setRecipeIngredients(
                   (previousIngredients) => {
-                    return [...previousIngredients, newIngredient];
+                    return [...previousIngredients, { ingredient: newIngredient, quantity: 1, measurement: '' }];
                   }
                 )
               }
             }
           }
         />
-        {ingredients.length != 0 && (
-          <IngredientList editable ingredients={ingredients} allMeasurements={allMeasurements} deleteIngredientHandler={deleteIngredientHandler}/>
+
+        {recipeIngredients.length != 0 && (
+          <IngredientList editable recipeIngredients={recipeIngredients} setRecipeIngredients={setRecipeIngredients} allMeasurements={allMeasurements} deleteIngredientHandler={deleteIngredientHandler} />
         )}
 
         <Pressable style={styles.newStepButton} >
@@ -315,5 +324,5 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-  },
+  }
 });

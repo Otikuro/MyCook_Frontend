@@ -9,6 +9,7 @@ export async function getAllMeasurements(): Promise<MethodType[]> {
         maxBodyLength: Infinity,
         url: server + endpoint + "all"
     };
+    console.log(config.url);
     let response = await axios.request(config);
-    return response.data.methods as MethodType[];
+    return response.data.measurements as MethodType[];
 }

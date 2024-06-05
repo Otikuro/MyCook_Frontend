@@ -10,7 +10,7 @@ export default function Recipe({recipe}: {recipe: RecipeType}){
             <Text>Duration: {recipe.duration}</Text>
             <Text>Difficulty: {recipe.difficulty}</Text>
             <Text>Ingredients:</Text>
-            <IngredientList editable={false} ingredients={recipe.recipe_ingredients}/>
+            <IngredientList editable={false} recipeIngredients={recipe.recipe_ingredients?recipe.recipe_ingredients:[]}/>
             <Text>Nutritional info per 100g</Text>
             <NutritionalInfo info={recipe.nutritionPer100g}/>
         </View>
