@@ -153,13 +153,13 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
     fd.append("title", postData.title);
     fd.append("description", postData.body);
     //@ts-ignore
-    fd.append('recipe', JSON.stringify({duration: recipeData.duration, difficulty: recipeData.difficulty, quantity: recipeData.quantity, recipeIngredidents: recipeIngredients, steps: []}));
+    fd.append('recipe', JSON.stringify({duration: recipeData.duration, difficulty: recipeData.difficulty, quantity: recipeData.quantity, recipeIngredients: recipeIngredients, steps: []}));
 
     console.log('sending recipe')
 
     createPost(fd)
       .then(() => setPostCreated(true))
-      .catch((error) => console.log("Error", JSON.stringify(error))); 
+      .catch((error) => console.log("Error", JSON.stringify(error)));
   }
 
   return (
@@ -228,6 +228,8 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
             }
           }
         />
+
+        <Text>{JSON.stringify(recipeIngredients)}</Text>
 
         {recipeIngredients.length != 0 && (
           <IngredientList editable recipeIngredients={recipeIngredients} setRecipeIngredients={setRecipeIngredients} allMeasurements={allMeasurements} deleteIngredientHandler={deleteIngredientHandler} />
