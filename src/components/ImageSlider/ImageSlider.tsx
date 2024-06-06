@@ -39,7 +39,6 @@ export default function ImageSlider({
       return <AddImageButton addImageFunction={addImage} width={width} />;
     const image = item as ImageType;
     const url = image.url.includes('file:')?image.url: (image.url.includes('http')?image.url:server+'api/image/'+image.url)
-    console.log(url)
     return (
       <Image
         alt={image.alt}

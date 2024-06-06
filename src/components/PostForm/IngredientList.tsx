@@ -8,17 +8,10 @@ export default function IngredientList({ editable, recipeIngredients, setRecipeI
     return (
         <View style={styles.table}>
             <View style={styles.row}>
-                <Text style={styles.input}>Name</Text>
-                <Text style={styles.input}>Quantity</Text>
-                <Text style={styles.input}>Measurement</Text>
-                <View style={styles.input}/>
-
-
-{/*                 
-                Esto para que era??
-                {editable &&
-                    <TextInput style={styles.input} />
-                } */}
+                <Text style={[styles.input,editable?styles.editable:styles.nonEditable]}>Name</Text>
+                <Text style={[styles.input,editable?styles.editable:styles.nonEditable]}>Quantity</Text>
+                <Text style={[styles.input,editable?styles.editable:styles.nonEditable]}>Measurement</Text>
+                {editable && <View style={[styles.input, styles.editable]}/>}
             </View>
 
             {recipeIngredients.map(
@@ -45,8 +38,13 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: 'black',
-        width: '25%',
         textAlign: 'center',
         color: 'black'
-    }
+    },
+    editable: {
+        width: '25%',
+    },
+    nonEditable: {
+        width: '33.3%',
+    },
 })

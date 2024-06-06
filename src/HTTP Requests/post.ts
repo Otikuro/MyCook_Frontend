@@ -10,7 +10,7 @@ export function createPost(fd: FormData) {
     url: server + endpoint + "create",
     data: fd,
   };
-  //return axios.request(config);
+  console.log(config.url)
   console.log(fd)
   return fetch(config.url, {
     method: "POST",

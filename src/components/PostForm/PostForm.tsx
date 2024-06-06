@@ -17,6 +17,7 @@ import ImageSlider from "../ImageSlider/ImageSlider";
 import { getAllIngredients } from "../../HTTP Requests/ingredient";
 import IngredientList from "./IngredientList";
 import { getAllMeasurements } from "../../HTTP Requests/measurement";
+import { useRoute } from "@react-navigation/native";
 
 const PLUS = require('../../../assets/NEW_POST_IMAGE.png');
 const DIFFICULTIES = [
@@ -26,6 +27,8 @@ const DIFFICULTIES = [
 ];
 
 export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
+  const route = useRoute();
+
   const [postData, setPostData] = useState<PostType>({
     title: "",
     body: "",
@@ -38,6 +41,18 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
     steps: [],
     recipe_ingredients: []
   });
+
+//@ts-ignore
+if (route.params && route.params.post) {
+  //@ts-ignore
+  setPostData = route.params.post as PostType;
+  //@ts-ignore
+    if(route.params.post.recipe)
+    //@ts-ignore
+    setRecipeData = route.params.post.recipe;
+
+}
+
   const [allMeasurements, setAllMeasurements] = useState([]);
   const [allIngredients, setAllIngredients] = useState([]);
   const [recipeIngredients, setRecipeIngredients] = useState([]);
@@ -73,7 +88,7 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
 
       <Pressable
         style={[styles.button, styles.postButton]}
-        onPress={isRecipe ? sendRecipe : sendPost}
+        onPress={sendPost}
       >
         <Text style={styles.postButtonText}>Post</Text>
       </Pressable>
@@ -115,6 +130,7 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
       recipe_ingredients: []
     }
     )
+    setRecipeIngredients([])
   }
 
   function deleteIngredientHandler(ingredient_id) {
@@ -127,7 +143,7 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
 
   function sendPost() {
     let fd = new FormData();
-    fd.append('sessionId', sessionId);
+    //fd.append('sessionId', sessionId);
     fd.append("title", postData.title);
     fd.append("description", postData.body);
     postData.images.forEach((image) =>
@@ -139,26 +155,22 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
           Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
       })
     );
+    let recipe
 
+    if (isRecipe) {
+      let recipe: RecipeType = {
+        duration: recipeData.duration,
+        difficulty: recipeData.difficulty,
+        quantity: recipeData.quantity,
+        recipe_ingredients: recipeIngredients,
+        steps: []
+      }
+      fd.append('recipe', JSON.stringify(recipe));
+    }
     console.log('Sending post')
 
     createPost(fd)
-      .then(() => setPostCreated(true))
-      .catch((error) => console.log("Error", JSON.stringify(error))); 
-  }
-
-  //Crear receta, codigo repetido con crear post
-  function sendRecipe() {
-    let fd = new FormData();
-    fd.append("title", postData.title);
-    fd.append("description", postData.body);
-    //@ts-ignore
-    fd.append('recipe', JSON.stringify({duration: recipeData.duration, difficulty: recipeData.difficulty, quantity: recipeData.quantity, recipeIngredients: recipeIngredients, steps: []}));
-
-    console.log('sending recipe')
-
-    createPost(fd)
-      .then(() => setPostCreated(true))
+      .then((response) => { setPostCreated(true); console.log('Post created!', response) })
       .catch((error) => console.log("Error", JSON.stringify(error)));
   }
 
@@ -229,7 +241,7 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
           }
         />
 
-        <Text>{JSON.stringify(recipeIngredients)}</Text>
+          <Text>{JSON.stringify(recipeIngredients)}</Text>
 
         {recipeIngredients.length != 0 && (
           <IngredientList editable recipeIngredients={recipeIngredients} setRecipeIngredients={setRecipeIngredients} allMeasurements={allMeasurements} deleteIngredientHandler={deleteIngredientHandler} />

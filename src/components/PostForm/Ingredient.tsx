@@ -2,24 +2,25 @@ import { Text, Pressable, Image, View, StyleSheet, TextInput } from "react-nativ
 import { Dropdown } from "react-native-element-dropdown";
 import { IngredientType, MeasurementType, MethodType, RecipeIngredientType } from "../../types";
 
-export default function Ingredient({ arrayPosition, editable, ingredient, setRecipeIngredients, allMeasurements, deleteIngredientHandler }: { arrayPosition: number, editable: boolean, ingredient: any, setRecipeIngredients: any, allMeasurements?: MeasurementType[], deleteIngredientHandler: (ingredient_id: number) => void }) {
+export default function Ingredient({ arrayPosition, editable, ingredient, setRecipeIngredients, allMeasurements, deleteIngredientHandler }: { arrayPosition: number, editable: boolean, ingredient: RecipeIngredientType, setRecipeIngredients: any, allMeasurements?: MeasurementType[], deleteIngredientHandler: (ingredient_id: number) => void }) {
     return (
         <View style={styles.row}>
-            <Text style={styles.input}>
+            <Text style={[styles.input, styles.centeredText, editable ? styles.editable : styles.nonEditable]}>
                 {ingredient.ingredient.name}
             </Text>
 
-            <TextInput style={styles.input} editable={editable} value={ingredient.quantity} onChangeText={(newValue) => {
+            <TextInput style={[styles.input, editable ? styles.editable : styles.nonEditable]} editable={editable} inputMode="numeric" value={ingredient.quantity.toString()} onChangeText={(newValue) => {
                 setRecipeIngredients(
                     (previousIngredients) => {
-                        previousIngredients[arrayPosition].quantity = newValue;
-                        return previousIngredients;
+                        let ingredients = [...previousIngredients]
+                        ingredients[arrayPosition] = { ...ingredients[arrayPosition], quantity: newValue };
+                        return ingredients;
                     }
                 )
             }} />
 
-            <View style={styles.input}>
-                <Dropdown
+            <View style={[styles.input, editable ? styles.editable : styles.nonEditable]}>
+                {editable && <Dropdown
                     style={styles.dropdown}
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
@@ -39,20 +40,22 @@ export default function Ingredient({ arrayPosition, editable, ingredient, setRec
                         (newUnit) => {
                             setRecipeIngredients(
                                 (previousIngredients) => {
-                                    previousIngredients[arrayPosition].measurement = newUnit;
-                                    return previousIngredients;
+                                    let ingredients = [...previousIngredients]
+                                    ingredients[arrayPosition] = { ...ingredients[arrayPosition], measurement: newUnit };
+                                    return ingredients;
                                 }
                             )
                         }
                     }
-                />
+                />}
+                {!editable && <Text style={styles.centeredText}>{ingredient.measurement.name}</Text>}
             </View>
 
 
-            <Pressable onPress={() => deleteIngredientHandler(ingredient.ingredient.ingredient_id)}>
+            {editable && <Pressable onPress={() => deleteIngredientHandler(ingredient.ingredient.ingredient_id)}>
                 <Text>Borrar</Text>
                 <Image></Image>
-            </Pressable>
+            </Pressable>}
         </View>
     );
 }
@@ -67,6 +70,13 @@ const styles = StyleSheet.create({
         width: '25%',
         textAlign: 'center',
         color: 'black'
+    },
+
+    editable: {
+        width: '25%',
+    },
+    nonEditable: {
+        width: '33.3%',
     },
 
     dropdown: {
@@ -91,5 +101,9 @@ const styles = StyleSheet.create({
     inputSearchStyle: {
         height: 40,
         fontSize: 16,
+    },
+    centeredText: {
+        textAlign: 'center',
+        verticalAlign: 'middle'
     }
 });
