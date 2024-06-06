@@ -89,7 +89,7 @@ export default function App() {
       ) : isSigning ? (
         <SignupForm signupFailed={signupFailed} signupHandler={signupHandler} changeFormHandler={changeFormHandler} />
       ) : (
-        <LoginForm loginFailed={loginFailed} loginHandler={loginHandler} changeFormHandler={changeFormHandler} />
+        <LoginForm loginFailed={loginFailed} loginHandler={loginHandler} changeFormHandler={changeFormHandler} setIsLoggedIn={setIsLoggedIn} />
       )}
     </LogOutHandlerContext.Provider>
   );

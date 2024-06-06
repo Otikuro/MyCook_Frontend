@@ -4,13 +4,16 @@ import { INITIAL_FORMS } from '../../styleConstants';
 
 const LOGO_IMAGE = require('../../../assets/LOGO_IMAGE.png');
 
-export default function LoginForm({ loginFailed, loginHandler, changeFormHandler }: { loginFailed: boolean, loginHandler: (user: string, password: string) => void, changeFormHandler: () => void }) {
+export default function LoginForm({ loginFailed, loginHandler, changeFormHandler, setIsLoggedIn }: { loginFailed: boolean, loginHandler: (user: string, password: string) => void, changeFormHandler: () => void, setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     return (
         <View style={INITIAL_FORMS.container}>
-            <Image style={INITIAL_FORMS.image} source={LOGO_IMAGE} />
+            <Pressable style={INITIAL_FORMS.image} onPress={()=>{setIsLoggedIn(true)}}>
+                <Image style={INITIAL_FORMS.image} source={LOGO_IMAGE} />
+            </Pressable>
+            
 
             <Text style={INITIAL_FORMS.title}>MyCook</Text>
 
