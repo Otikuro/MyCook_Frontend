@@ -37,7 +37,7 @@ export default function Channels() {
                 <Image style={styles.newChannelIcon} source={PLUS} />
                 <Text style={styles.buttonText}>New Channel</Text>
             </Pressable>}
-            <Pressable style={styles.channelContainer} onPress={() => getPostedBy().then(posts => { console.log(posts);navigation.navigate('Channel', { posts: posts }) })}>
+            <Pressable style={styles.channelContainer} onPress={() => getPostedBy().then(posts => { console.log(posts); navigation.navigate('Channel', { posts: posts }) })}>
                 <Text style={styles.title}>My Posts</Text>
             </Pressable>
             <Pressable style={styles.channelContainer} onPress={() => getLikedBy().then(posts => { navigation.navigate('Channel', { posts: posts }) })}>
@@ -57,8 +57,12 @@ function NewChannelForm({ setCreatingChannel }) {
                 console.log(message)
                 setCreatingChannel(false)
             })
-
     }
+
+    function cancelEditing() {
+        setCreatingChannel(false)
+    }
+
     return (
         <View>
             <Text>New channel name:</Text>
@@ -67,16 +71,22 @@ function NewChannelForm({ setCreatingChannel }) {
                 value={channelName}
                 onChangeText={setChannelName}
             />
-            <Pressable onPress={createChannelHandler}>
-                <Text>Create Channel</Text>
-            </Pressable>
+            <View style={styles.buttons}>
+                <Pressable onPress={cancelEditing} style={[styles.formButton, styles.cancelButton]}>
+                    <Text style={styles.cancelButtonText}>Cancel</Text>
+                </Pressable>
+                <Pressable onPress={createChannelHandler} style={[styles.formButton, styles.postButton]}>
+                    <Text style={styles.postButtonText}>Create</Text>
+                </Pressable>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%'
+        height: '100%',
+        padding: 8
     },
     button: {
         width: '80%',
@@ -114,5 +124,31 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold'
+    },
+    buttons: {
+        width: "100%",
+        marginVertical: 8,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        gap: 8
+    },
+    formButton: {
+        borderRadius: 8,
+        flexGrow: 1,
+        paddingVertical: 6
+    },
+    cancelButton: {
+        backgroundColor: "#FFE9E9",
+    },
+    cancelButtonText: {
+        color: "#FF0000",
+        textAlign: "center",
+    },
+    postButton: {
+        backgroundColor: "#FFAE27",
+    },
+    postButtonText: {
+        textAlign: "center",
     }
 });
