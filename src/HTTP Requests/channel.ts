@@ -8,7 +8,7 @@ export async function getAllChannels(): Promise<ChannelType[]> {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: server + endpoint + 'all/'
+      url: server + endpoint + 'all'
     };
     console.log(config.url);
     let response = await axios.request(config);
