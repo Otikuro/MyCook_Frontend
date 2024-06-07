@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Image, View, TextInput, Text, Pressable } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Image, View, TextInput, Text, Pressable, StyleSheet } from 'react-native';
 import { INITIAL_FORMS } from '../../styleConstants';
 
 const LOGO_IMAGE = require('../../../assets/LOGO_IMAGE.png');
@@ -8,6 +8,21 @@ export default function SignupForm({ signupFailed, changeFormHandler, signupHand
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState({email:false, password:false});
+
+    useEffect(()=>{
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        setErrors({...errors,email: email.length>0 && !regex.test(email)});
+        console.log('email', errors)
+    },[email])
+
+    useEffect(()=>{
+        const regex = /^.{8,}$/;
+        setErrors({...errors,password: password.length>0 && !regex.test(password)});
+    },[password])
+
+    
+
 
     return (
         <View style={INITIAL_FORMS.container}>
@@ -17,13 +32,18 @@ export default function SignupForm({ signupFailed, changeFormHandler, signupHand
 
             <View style={INITIAL_FORMS.form}>
                 <Text>User</Text>
-                <TextInput style={INITIAL_FORMS.input} value={username} onChangeText={setUsername} />
 
+                <TextInput style={INITIAL_FORMS.input} value={username} onChangeText={setUsername} />
+                
                 <Text>Email</Text>
                 <TextInput style={INITIAL_FORMS.input} value={email} onChangeText={setEmail} />
+                {errors.email && <Text style={styles.error}>Check the email format</Text>}
+
 
                 <Text>Password</Text>
-                <TextInput style={INITIAL_FORMS.input} value={password} onChangeText={setPassword} />
+                <TextInput style={INITIAL_FORMS.input} value={password} onChangeText={setPassword}/>
+                {errors.password && <Text style={styles.error}>Your password must have at leas 8 characters</Text>}
+
 
                 {/*                 <Text>Repeat your password</Text>
                 <TextInput style={INITIAL_FORMS.input} /> */}
@@ -35,7 +55,7 @@ export default function SignupForm({ signupFailed, changeFormHandler, signupHand
                     </View>
                 }
 
-                <Pressable style={INITIAL_FORMS.button} onPress={() => signupHandler(username, email, password)}>
+                <Pressable style={INITIAL_FORMS.button} onPress={() => !errors.email&&!errors.password&&signupHandler(username, email, password)}>
                     <Text>Create account</Text>
                 </Pressable>
 
@@ -48,3 +68,9 @@ export default function SignupForm({ signupFailed, changeFormHandler, signupHand
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    error:{
+        color:'red'
+    }
+})
