@@ -45,16 +45,16 @@ const styles = StyleSheet.create({
     height: 45,
     padding: 5,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   image: {
     width: 38,
     height: 38,
     marginRight: 8,
-    marginLeft: 8,
+    marginLeft: 8
   },
   title: {
     fontSize: 26,
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
 });

@@ -1,8 +1,6 @@
 import { Image, StyleSheet, View } from "react-native";
 import {
-  NavigationContainer,
-  useNavigation,
-  useRoute,
+  NavigationContainer
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -12,8 +10,6 @@ import Channels from "../Channels/Channels";
 import Channel, { JoinButton } from "../Channel/Channel";
 import PostList from "../PostList/PostList";
 import Post from "../Post/Post";
-import Ingredient from "../PostForm/Ingredient";
-import UserCollapsed from "../UserCollapsed/UserCollapsed";
 import User from "../User/User";
 import Header from "../Header/Header";
 import PostOptions from "../Post/PostOptions";
@@ -96,10 +92,9 @@ function TabNavigator({ logoutHandler }: { logoutHandler: () => void }) {
   );
 }
 
-
 const styles = StyleSheet.create({
   image: {
     height: 38,
-    width: 38,
+    width: 38
   },
 });

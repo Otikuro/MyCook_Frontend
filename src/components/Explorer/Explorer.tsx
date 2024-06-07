@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { ChannelType, PostType, RecipeType } from "../../types";
 import { getAllPost, getPost } from "../../HTTP Requests/post";
-import { server } from "../../HTTP Requests/general";
 import { getAllChannels } from "../../HTTP Requests/channel";
 import Searcher from "../Searcher/Searcher";
 import Selector from "../Selector/Selector";
-import Post from "../Post/Post";
 import PostList from "../PostList/PostList";
 import Channel from "../Channel/Channel";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -81,9 +79,9 @@ export default function Explorer() {
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
+    height: "100%"
   },
   scroll: {
-    alignItems: "stretch",
+    alignItems: "stretch"
   },
 });

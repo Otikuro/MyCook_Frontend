@@ -60,6 +60,7 @@ export default function Channels() {
         onPress={() =>
           getPostedBy().then((posts) => {
             console.log(posts);
+            //@ts-ignore
             navigation.navigate("Channel", { posts: posts });
           })
         }
@@ -71,6 +72,7 @@ export default function Channels() {
         style={styles.channelContainer}
         onPress={() =>
           getLikedBy().then((posts) => {
+            //@ts-ignore
             navigation.navigate("Channel", { posts: posts });
           })
         }

@@ -67,7 +67,7 @@ export default function SignupForm({
         />
         {errors.email && (
           <Text style={styles.error}>Check the email format</Text>
-        )}{" "}
+        )}
         {/* Muestra un mensaje de error si el formato de email es incorrecto */}
         {/* Campo de contraseña */}
         <Text>Password</Text>
@@ -81,7 +81,7 @@ export default function SignupForm({
           <Text style={styles.error}>
             Your password must have at least 8 characters
           </Text>
-        )}{" "}
+        )}
         {/* Muestra un mensaje de error si la contraseña es demasiado corta */}
         {/* Mensaje de error de inicio de sesión */}
         {signupFailed && (
@@ -115,6 +115,6 @@ export default function SignupForm({
 
 const styles = StyleSheet.create({
   error: {
-    color: "red",
+    color: "red"
   },
 });

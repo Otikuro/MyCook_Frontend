@@ -90,6 +90,7 @@ export default function Post({
             isPreviewed
               ? () =>
                   getPost(post.post_id).then((post) =>
+                  //@ts-ignore
                     navigation.navigate("Post", { post: post })
                   )
               : () => {}

@@ -1,5 +1,5 @@
 import { Text, StyleSheet, Pressable } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { addPostToChannel } from "../../HTTP Requests/channel";
 import { ChannelType } from "../../types";
 
@@ -22,13 +22,12 @@ export default function ChannelCollapsed({
         addPostToChannel(channel.channel_id, post_id).then(hideChannels);
       }}
     >
-      <Text style={styles.buttonText}>{channel.name}</Text>{" "}
+      <Text style={styles.buttonText}>{channel.name}</Text>
       {/* Renderizado del nombre del canal */}
     </Pressable>
   );
 }
 
-// Estilos para el componente ChannelCollapsed
 const styles = StyleSheet.create({
   menuButton: {
     height: 32,
@@ -36,9 +35,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "lightgray",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   buttonText: {
-    textAlign: "center", // Estilo para centrar el texto
-  },
+    textAlign: "center" 
+  }
 });

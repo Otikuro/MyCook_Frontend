@@ -1,5 +1,4 @@
 import { Text, StyleSheet, Pressable } from "react-native";
-import Navigation from "../Navigation/Navigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { getPostsFromChannel, joinChannel } from "../../HTTP Requests/channel";
 import { ChannelType } from "../../types";
@@ -27,6 +26,7 @@ export default function Channel({ channel }: { channel: ChannelType }) {
       onPress={() => {
         getPostsFromChannel(channel.channel_id).then((posts) => {
           // Navega al componente de canal con los posts y la información actualizada del canal
+          //@ts-ignore
           navigation.navigate("Channel", {
             posts: posts,
             channel: { ...channel, amIMember: !joinable },
@@ -34,7 +34,7 @@ export default function Channel({ channel }: { channel: ChannelType }) {
         });
       }}
     >
-      <Text style={styles.title}>{channel.name}</Text>{" "}
+      <Text style={styles.title}>{channel.name}</Text>
       {/* Renderizado del nombre del canal */}
       <JoinButton
         inputChannel={channel}
@@ -106,22 +106,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 8,
+    padding: 8
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   button: {
     textAlign: "center",
     borderRadius: 8,
     width: 100,
-    padding: 6,
+    padding: 6
   },
   join: {
-    backgroundColor: "#FFAE27",
+    backgroundColor: "#FFAE27"
   },
   joined: {
-    backgroundColor: "lightgreen",
+    backgroundColor: "lightgreen"
   },
 });
