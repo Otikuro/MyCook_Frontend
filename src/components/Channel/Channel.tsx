@@ -29,13 +29,15 @@ export default function Channel({ channel }: { channel: ChannelType }) {
           //@ts-ignore
           navigation.navigate("Channel", {
             posts: posts,
-            channel: { ...channel, amIMember: !joinable },
+            channel: { ...channel, amIMember: !joinable }
           });
         });
       }}
     >
-      <Text style={styles.title}>{channel.name}</Text>
+
       {/* Renderizado del nombre del canal */}
+      <Text style={styles.title}>{channel.name}</Text>
+
       <JoinButton
         inputChannel={channel}
         joinable={joinable}

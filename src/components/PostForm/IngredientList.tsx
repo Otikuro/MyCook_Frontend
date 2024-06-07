@@ -1,9 +1,6 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import {
-  IngredientType,
-  MeasurementType,
-  MethodType,
-  RecipeIngredientType,
+  MeasurementType
 } from "../../types";
 import Ingredient from "./Ingredient";
 
@@ -21,8 +18,6 @@ export default function IngredientList({
   allMeasurements?: MeasurementType[];
   deleteIngredientHandler?: (ingredient_id: number) => void;
 }) {
-  //console.log(recipeIngredients);
-
   return (
     <View style={styles.table}>
       <View style={styles.row}>
@@ -37,7 +32,7 @@ export default function IngredientList({
         <Text
           style={[
             styles.input,
-            editable ? styles.editable : styles.nonEditable,
+            editable ? styles.editable : styles.nonEditable
           ]}
         >
           Quantity
@@ -45,7 +40,7 @@ export default function IngredientList({
         <Text
           style={[
             styles.input,
-            editable ? styles.editable : styles.nonEditable,
+            editable ? styles.editable : styles.nonEditable
           ]}
         >
           Measurement

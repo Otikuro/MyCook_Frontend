@@ -140,7 +140,6 @@ const styles = StyleSheet.create({
   nonEditable: {
     width: "33.3%",
   },
-
   dropdown: {
     height: 20,
     width: 80,
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     padding: 12,
     elevation: 2,
     backgroundColor: "white",
-    marginVertical: 8,
+    marginVertical: 8
   },
   placeholderStyle: {
     fontSize: 14,

@@ -15,7 +15,6 @@ import Comment from "../Comment/Comment";
 import { useState } from "react";
 import { commentPost, getPost, votePost } from "../../HTTP Requests/post";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { server } from "../../HTTP Requests/general";
 import Recipe from "../Recipe/Recipe";
 
 const USER_IMAGE = require("../../../assets/USER_IMAGE.png");

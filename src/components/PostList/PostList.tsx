@@ -1,8 +1,7 @@
 import { FlatList, StyleSheet } from "react-native";
-import { PostType, RecipeType } from "../../types";
+import { PostType } from "../../types";
 import Post from "../Post/Post";
 import { useRoute } from "@react-navigation/native";
-import { useState } from "react";
 
 export default function PostList({
   posts = [],

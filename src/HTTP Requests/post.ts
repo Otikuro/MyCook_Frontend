@@ -1,5 +1,5 @@
 import axios from "axios";
-import { server, sessionId } from "./general";
+import { server } from "./general";
 import { PostType } from "../types";
 const endpoint = "api/post/";
 

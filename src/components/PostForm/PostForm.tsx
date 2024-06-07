@@ -317,11 +317,6 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
         </>
       )}
 
-      {/* <Pressable style={styles.newStepButton} >
-          <Image style={styles.newStepIcon} source={PLUS} />
-          <Text>Add New Step</Text>
-        </Pressable> */}
-
       {BUTTONS}
     </ScrollView>
   );
