@@ -76,7 +76,6 @@ export default function Post({
     setRenderedVotes(renderedVotes + votesAdded)
   }
 
-  if (!isPreviewed) console.log(post)
 
   return (
     <ScrollView style={styles.main} contentContainerStyle={styles.second}>
@@ -90,7 +89,7 @@ export default function Post({
             <Text>{post.body}</Text>
           </View>
 
-          {post.images != undefined && (
+          {post.images != undefined && post.images.length >0 && (
             <>{!isPreviewed &&
               <View style={[styles.postImage]} >
                 <ImageSlider images={post.images} width={0.88} />

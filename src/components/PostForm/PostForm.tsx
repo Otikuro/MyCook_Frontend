@@ -9,7 +9,7 @@ import {
   Image,
   ScrollView
 } from "react-native";
-import { createPost } from "../../HTTP Requests/post";
+import { createPost, getPost, updatePost } from "../../HTTP Requests/post";
 import { sessionId } from "../../HTTP Requests/general";
 import { ImageType, MethodType, PostType, RecipeType } from "../../types";
 import { Dropdown } from "react-native-element-dropdown";
@@ -17,7 +17,7 @@ import ImageSlider from "../ImageSlider/ImageSlider";
 import { getAllIngredients } from "../../HTTP Requests/ingredient";
 import IngredientList from "./IngredientList";
 import { getAllMeasurements } from "../../HTTP Requests/measurement";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const PLUS = require('../../../assets/NEW_POST_IMAGE.png');
 const DIFFICULTIES = [
@@ -27,6 +27,7 @@ const DIFFICULTIES = [
 ];
 
 export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
+  const navigation = useNavigation();
   const route = useRoute();
 
   const [postData, setPostData] = useState<PostType>({
@@ -42,21 +43,127 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
     recipe_ingredients: []
   });
 
-//@ts-ignore
-if (route.params && route.params.post) {
-  //@ts-ignore
-  setPostData = route.params.post as PostType;
-  //@ts-ignore
-    if(route.params.post.recipe)
-    //@ts-ignore
-    setRecipeData = route.params.post.recipe;
-
-}
-
   const [allMeasurements, setAllMeasurements] = useState([]);
   const [allIngredients, setAllIngredients] = useState([]);
   const [recipeIngredients, setRecipeIngredients] = useState([]);
   const [postCreated, setPostCreated] = useState(false);
+  const [beingUpdated, setBeingUpdated] = useState(false);
+  function sendPost() {
+    let fd = new FormData();
+    fd.append("title", postData.title);
+    fd.append("description", postData.body);
+    postData.images.forEach((image) =>
+      //@ts-ignore
+      fd.append("images[]", {
+        name: image.image_id,
+        type: "image/jpeg",
+        uri:
+          Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
+      })
+    );
+    if (isRecipe) {
+      let recipe: RecipeType = {
+        duration: recipeData.duration,
+        difficulty: recipeData.difficulty,
+        quantity: recipeData.quantity,
+        recipe_ingredients: recipeIngredients,
+        steps: []
+      }
+      fd.append('recipe', JSON.stringify(recipe));
+      console.log('recipe', JSON.stringify(recipe))
+    }
+    console.log('Sending post')
+
+    createPost(fd)
+      .then((response) => { return response.json() })
+      .then((data) => {
+        let post: PostType = data.post as PostType
+        console.log('post: ', post)
+        navigation.reset({
+          index: 0,
+          routes: [
+            { name: 'Explorer' },
+          ],
+        })
+        navigation.navigate('Post', { post: post })
+      })
+      .catch((error) => console.log("Error", error.message));
+  }
+  function sendUpdate() {
+    let fd = new FormData();
+    fd.append("title", postData.title);
+    fd.append("description", postData.body);
+    postData.images.forEach((image) =>
+      //@ts-ignore
+      fd.append("images[]", {
+        name: image.image_id,
+        type: "image/jpeg",
+        uri:
+          Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
+      })
+    );
+    //@ts-ignore
+    if (route.params.post.recipe && route.params.post.recipe != null) {
+      let recipe: RecipeType = {
+        duration: recipeData.duration,
+        difficulty: recipeData.difficulty,
+        quantity: recipeData.quantity,
+        recipe_ingredients: recipeIngredients,
+        steps: []
+      }
+      fd.append('recipe', JSON.stringify(recipe));
+      console.log('recipe', JSON.stringify(recipe))
+    }
+
+    console.log('Sending post')
+
+    updatePost(fd, postData.post_id)
+      .then((response) => { console.log('res', response); return response.json() })
+      .then((data) => {
+        let post: PostType = data.post as PostType
+        console.log('post: ', post)
+        navigation.reset({
+          index: 0,
+          routes: [
+            { name: 'Explorer' },
+          ],
+        })
+        navigation.navigate('Explorer')
+      })
+      .catch((error) => console.log("Error", error.message));
+  }
+
+
+  //Recover all measurement units in DB
+  useEffect(
+    () => {
+      getAllMeasurements()
+        .then((measurements) => {
+          setAllMeasurements(measurements)
+        })
+        .catch((e) => console.log(e));
+
+      getAllIngredients()
+        .then((ingredients) => setAllIngredients(ingredients))
+        .catch((e) => console.log(e));
+
+
+      //@ts-ignore
+      if (route.params && route.params.post) {
+        //@ts-ignore
+        setPostData(route.params.post as PostType)
+        //@ts-ignore
+        //if (route.params.post.recipe)
+          //@ts-ignore
+          setRecipeData(route.params.post.recipe)
+        setBeingUpdated(true)
+        if (route.params.post.recipe && route.params.post.recipe != null) {
+          setRecipeIngredients(route.params.post.recipe.recipe_ingredients)
+        }
+      }
+
+    }, []
+  );
 
   const BASIC_FORM = <>
     <Text>Title</Text>
@@ -72,49 +179,30 @@ if (route.params && route.params.post) {
       value={postData.body}
       onChangeText={(text) => setPostData({ ...postData, body: text })}
     />
-
+    {!(beingUpdated && postData.images.length <=0) && 
     <ImageSlider
       images={postData.images}
-      setImages={setPostImages}
+      setImages={beingUpdated ? undefined : setPostImages}
       width={0.88}
-    />
+    />}
   </>;
 
   const BUTTONS = <>
     <View style={styles.buttons}>
-      <Pressable style={[styles.button, styles.cancelButton]} onPress={clear}>
-        <Text style={styles.cancelButtonText}>Clear</Text>
+      <Pressable style={[styles.button, styles.cancelButton]} onPress={beingUpdated?navigation.goBack:clear}>
+        <Text style={styles.cancelButtonText}>{beingUpdated?'Cancel':'Clear'}</Text>
       </Pressable>
 
       <Pressable
         style={[styles.button, styles.postButton]}
-        onPress={sendPost}
+        onPress={beingUpdated ? sendUpdate : sendPost}
       >
-        <Text style={styles.postButtonText}>Post</Text>
+        <Text style={styles.postButtonText}>{beingUpdated?'Update':'Post'}</Text>
       </Pressable>
     </View>
   </>;
 
-  //Recover all measurement units in DB
-  useEffect(
-    () => {
-      getAllMeasurements()
-        .then((measurements) => {
-          setAllMeasurements(measurements)
-        })
-        .catch((e) => console.log(e));
-    }, []
-  );
 
-  //Recover all ingredients in DB
-  useEffect(
-    () => {
-      getAllIngredients()
-        .then((ingredients) => setAllIngredients(ingredients))
-        .catch((e) => console.log(e));
-    },
-    []
-  );
 
   function clear() {
     setPostData({
@@ -141,52 +229,20 @@ if (route.params && route.params.post) {
     setPostData({ ...postData, images: postImages });
   }
 
-  function sendPost() {
-    let fd = new FormData();
-    //fd.append('sessionId', sessionId);
-    fd.append("title", postData.title);
-    fd.append("description", postData.body);
-    postData.images.forEach((image) =>
-      //@ts-ignore
-      fd.append("images[]", {
-        name: image.image_id,
-        type: "image/jpeg",
-        uri:
-          Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
-      })
-    );
-    let recipe
 
-    if (isRecipe) {
-      let recipe: RecipeType = {
-        duration: recipeData.duration,
-        difficulty: recipeData.difficulty,
-        quantity: recipeData.quantity,
-        recipe_ingredients: recipeIngredients,
-        steps: []
-      }
-      fd.append('recipe', JSON.stringify(recipe));
-    }
-    console.log('Sending post')
-
-    createPost(fd)
-      .then((response) => { setPostCreated(true); console.log('Post created!', response) })
-      .catch((error) => console.log("Error", JSON.stringify(error)));
-  }
 
   return (
     (!isRecipe ? (
       <View style={styles.container}>
-        {postCreated && (<Text style={{ color: 'green' }}>Post Created!</Text>)}
         {BASIC_FORM}
 
         {BUTTONS}
       </View>
     ) : (
       <ScrollView contentContainerStyle={styles.container}>
-        {postCreated && (<Text style={{ color: 'green' }}>Post Created!</Text>)}
         {BASIC_FORM}
 
+        {recipeData != null  && <>
         <Text>Duration</Text>
         <TextInput
           style={styles.input}
@@ -207,6 +263,7 @@ if (route.params && route.params.post) {
           style={styles.dropdown}
           mode="modal"
           data={DIFFICULTIES}
+          value={recipeData.difficulty}
           labelField="label"
           valueField="value"
           placeholder={"Difficulty"}
@@ -241,16 +298,14 @@ if (route.params && route.params.post) {
           }
         />
 
-          <Text>{JSON.stringify(recipeIngredients)}</Text>
-
-        {recipeIngredients.length != 0 && (
+        {recipeIngredients.length > 0 && (
           <IngredientList editable recipeIngredients={recipeIngredients} setRecipeIngredients={setRecipeIngredients} allMeasurements={allMeasurements} deleteIngredientHandler={deleteIngredientHandler} />
-        )}
+        )}</>}
 
-        <Pressable style={styles.newStepButton} >
+        {/* <Pressable style={styles.newStepButton} >
           <Image style={styles.newStepIcon} source={PLUS} />
           <Text>Add New Step</Text>
-        </Pressable>
+        </Pressable> */}
 
         {BUTTONS}
       </ScrollView >

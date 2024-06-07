@@ -59,3 +59,15 @@ export async function joinChannel(id :number) {
   let response = await axios.request(config);
   return response.data.message;
 }
+
+export async function addPostToChannel(channel_id :number, post_id: number) {
+  let config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: server + endpoint + 'addPost/'+ channel_id + '/'+ post_id
+  };
+  console.log(config.url)
+  let response = await axios.request(config);
+  console.log(response.data.message);
+  return response
+}

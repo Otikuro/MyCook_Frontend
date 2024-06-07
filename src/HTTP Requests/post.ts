@@ -18,6 +18,21 @@ export function createPost(fd: FormData) {
   });
 }
 
+export function updatePost(fd: FormData, post_id: number) {
+  let config = {
+    method: "POST",
+    maxBodyLength: Infinity,
+    url: server + endpoint + "update/" + post_id,
+    data: fd,
+  };
+  console.log(config.url)
+  console.log(fd)
+  return fetch(config.url, {
+    method: "POST",
+    body: fd,
+  });
+}
+
 export async function getAllPost(): Promise<PostType[]> {
   let config = {
     method: "get",

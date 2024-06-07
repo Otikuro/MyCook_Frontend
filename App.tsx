@@ -30,7 +30,6 @@ export default function App() {
     function handleInvalidLogin(error: AxiosError) {
       console.log(error.message);
       setLoginFailed(true);
-      setIsLoggedIn(false);
     }
 
     login(username, password)
@@ -54,9 +53,9 @@ export default function App() {
         (response) => {
           console.log('User created: ' + response);
           setsignupFailed(false);
-          /*           login(username, password)
-                    .then(handleValidLogin)
-                    .catch(handleInvalidLogin); */
+
+          loginHandler(username, password)
+
 
         }
       )

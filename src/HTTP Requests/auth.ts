@@ -2,7 +2,7 @@ import axios from 'axios';
 import { server, sessionId } from './general';
 const endpoint = "api/auth/";
 
-export function login(username: string, password: string) {
+export async function login(username: string, password: string) {
   let config = {
     method: 'post',
     maxBodyLength: Infinity,
@@ -14,7 +14,9 @@ export function login(username: string, password: string) {
     data: JSON.stringify({ username: username, password: password })
   };
   console.log(config.url)
-  return axios.request(config)
+  let response = await axios.request(config)
+  console.log(response.data)
+  return response
 }
 
 export function logout() {

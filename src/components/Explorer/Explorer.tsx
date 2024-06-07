@@ -20,6 +20,8 @@ export default function Explorer() {
   const [tabSelected, setTabSelected] = useState(false);
   const [renderedPosts, setRenderedPosts] = useState<Array<PostType>>([]);
   const [channels, setChannels] = useState<Array<ChannelType>>([]);
+  const [changed, setChanged] = useState<boolean>(false);
+
 
 
   function reload() {
@@ -29,6 +31,7 @@ export default function Explorer() {
     getAllChannels()
       .then((channels) => setChannels(channels))
       .catch((e) => console.log(e));
+    setChanged(true)
   }
 
   useEffect(

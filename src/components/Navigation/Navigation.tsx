@@ -12,6 +12,8 @@ import Ingredient from '../PostForm/Ingredient';
 import UserCollapsed from '../UserCollapsed/UserCollapsed';
 import User from '../User/User';
 import Header from '../Header/Header';
+import PostOptions from '../Post/PostOptions';
+import PostForm from '../PostForm/PostForm';
 
 const ICONS = {
     Explorer: require('../../../assets/EXPLORER_IMAGE.png'),
@@ -38,10 +40,17 @@ export default function Navigation() {
                 <Stack.Screen
                     name="Post"
                     component={Post}
+                    options={{
+                        headerRight:()=>(<PostOptions/>)
+                    }}
                 />
                 <Stack.Screen
                     name="User"
                     component={User}
+                />
+                <Stack.Screen
+                    name="PostForm"
+                    component={PostForm}
                 />
             </Stack.Navigator>
         </NavigationContainer>

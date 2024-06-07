@@ -2,13 +2,14 @@ import { FlatList, StyleSheet } from "react-native";
 import { PostType, RecipeType } from "../../types";
 import Post from "../Post/Post";
 import { useRoute } from "@react-navigation/native";
+import { useState } from "react";
 
 export default function PostList({
   posts= [],
-  onRefresh
+  onRefresh,
 } : {
   posts: Array<PostType>;
-  onRefresh: Function
+  onRefresh: ()=>void,
 }) {
   const route = useRoute();
   
@@ -24,6 +25,8 @@ export default function PostList({
       key={item.post_id}
     />
   )};
+
+
 
   return (
     <FlatList

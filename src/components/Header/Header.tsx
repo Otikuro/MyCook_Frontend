@@ -7,13 +7,24 @@ const USER_IMAGE = require('../../../assets/USER_IMAGE.png');
 export default function Header() {
     const navigation = useNavigation();
 
+    function goExplore(){
+        navigation.reset({
+            index: 0,
+            routes: [
+              { name: 'Explorer' },
+            ],
+          })
+        navigation.navigate('Explorer')
+        console.log('explore')
+    }
+
     return (
         <View style={styles.container}>
-            <Pressable >
+            <Pressable onPress={goExplore}>
                 <Image style={styles.image} source={LOGO_IMAGE} />
             </Pressable>
 
-            <Pressable >
+            <Pressable onPress={goExplore}>
                 <Text style={styles.title}>MyCook</Text>
             </Pressable>
 
