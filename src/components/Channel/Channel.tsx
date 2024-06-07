@@ -5,13 +5,17 @@ import { getPostsFromChannel, joinChannel } from "../../HTTP Requests/channel";
 import { ChannelType } from "../../types";
 import { useEffect, useState } from "react";
 
+// Componente funcional Channel
 export default function Channel({ channel }: { channel: ChannelType }) {
-  const navigation = useNavigation();
-  const route = useRoute();
+  const navigation = useNavigation(); // Uso del hook useNavigation para obtener la instancia de navegación
+  const route = useRoute(); // Uso del hook useRoute para obtener la ruta actual
 
+  // Estado local para determinar si el usuario puede unirse al canal
   const [joinable, setJoinable] = useState(
     channel.amIMember != undefined && !channel.amIMember
   );
+
+  // Verifica si hay un canal especificado en los parámetros de la ruta y actualiza el canal
   if (route.params && (route.params as { channel: ChannelType }).channel) {
     channel = (route.params as { channel: ChannelType }).channel;
   }
@@ -22,6 +26,7 @@ export default function Channel({ channel }: { channel: ChannelType }) {
       style={styles.container}
       onPress={() => {
         getPostsFromChannel(channel.channel_id).then((posts) => {
+          // Navega al componente de canal con los posts y la información actualizada del canal
           navigation.navigate("Channel", {
             posts: posts,
             channel: { ...channel, amIMember: !joinable },
@@ -29,7 +34,8 @@ export default function Channel({ channel }: { channel: ChannelType }) {
         });
       }}
     >
-      <Text style={styles.title}>{channel.name}</Text>
+      <Text style={styles.title}>{channel.name}</Text>{" "}
+      {/* Renderizado del nombre del canal */}
       <JoinButton
         inputChannel={channel}
         joinable={joinable}
@@ -39,6 +45,7 @@ export default function Channel({ channel }: { channel: ChannelType }) {
   );
 }
 
+// Componente funcional JoinButton para el botón de unirse
 export function JoinButton({
   inputChannel,
   joinable,
@@ -48,17 +55,20 @@ export function JoinButton({
   joinable?: boolean;
   setJoinable?: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const route = useRoute();
+  const route = useRoute(); // Uso del hook useRoute para obtener la ruta actual
 
+  // Función para unirse al canal
   function join(id) {
     joinChannel(id);
-    if (setJoinable) setJoinable(false);
+    if (setJoinable) setJoinable(false); // Actualiza el estado para indicar que el usuario ya se unió al canal
     setButtonJoinable(false);
   }
 
+  // Estado local para determinar si el botón de unirse está habilitado
   const [buttonJoinable, setButtonJoinable] = useState(joinable ?? false);
   const [channel, setChannel] = useState(inputChannel);
 
+  // Función para inicializar el estado local y verificar la ruta actual
   function initialize() {
     if (route.params && (route.params as { channel: ChannelType }).channel) {
       let routeChannel: ChannelType = (route.params as { channel: ChannelType })
@@ -72,7 +82,7 @@ export function JoinButton({
   }
 
   useEffect(() => {
-    initialize();
+    initialize(); // Llama a la función initialize al montar el componente
   }, []);
 
   return (
