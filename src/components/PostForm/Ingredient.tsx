@@ -14,6 +14,8 @@ import {
   RecipeIngredientType,
 } from "../../types";
 
+const deleteImage = require("../../../assets/red-trash-can-icon.png");
+
 // Este es un componente de React Native llamado `Ingredient`, que muestra un ingrediente de una receta.
 export default function Ingredient({
   // Propiedades recibidas por el componente
@@ -111,9 +113,9 @@ export default function Ingredient({
           onPress={() =>
             deleteIngredientHandler(ingredient.ingredient.ingredient_id)
           }
+          style={styles.deleteButton}
         >
-          <Text>Borrar</Text>
-          <Image></Image>
+          <Image source={deleteImage} style={styles.deleteImage} />
         </Pressable>
       )}
     </View>
@@ -165,5 +167,16 @@ const styles = StyleSheet.create({
   centeredText: {
     textAlign: "center",
     verticalAlign: "middle",
+  },
+  deleteImage: {
+    height: 24,
+    aspectRatio: 0.8,
+  },
+  deleteButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    padding: 4,
   },
 });
