@@ -41,7 +41,7 @@ export default function SignupForm({ signupFailed, changeFormHandler, signupHand
 
 
                 <Text>Password</Text>
-                <TextInput style={INITIAL_FORMS.input} value={password} onChangeText={setPassword}/>
+                <TextInput style={INITIAL_FORMS.input} value={password} secureTextEntry onChangeText={setPassword}/>
                 {errors.password && <Text style={styles.error}>Your password must have at leas 8 characters</Text>}
 
 
