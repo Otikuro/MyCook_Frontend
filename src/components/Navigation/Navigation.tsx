@@ -1,7 +1,5 @@
 import { Image, StyleSheet, View } from "react-native";
-import {
-  NavigationContainer
-} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Explorer from "../Explorer/Explorer";
@@ -43,10 +41,11 @@ export default function Navigation() {
           component={PostList} // Lista de publicaciones
           options={({ route }) => ({
             headerTitle: (route.params as { channel: ChannelType }).channel
-              .name, // Título de la pantalla basado en el nombre del canal
-            headerRight: () => ( // Componente de botón derecho en la barra de navegación
+              ?.name, // Título de la pantalla basado en el nombre del canal
+            headerRight: () => (
+              // Componente de botón derecho en la barra de navegación
               <View style={{ padding: 8 }}>
-                <JoinButton /> {/* Botón de unirse al canal */}
+                <JoinButton />
               </View>
             ),
           })}
@@ -95,6 +94,6 @@ function TabNavigator({ logoutHandler }: { logoutHandler: () => void }) {
 const styles = StyleSheet.create({
   image: {
     height: 38,
-    width: 38
+    width: 38,
   },
 });
