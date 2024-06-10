@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import { View, Image, Text, Pressable, StyleSheet } from "react-native";
-import { LogOutHandlerContext } from "../../Contexts/LogoutHandlerContext";
+import { LogOutHandlerContext } from "../../Contexts/Contexts";
 
 const USER_IMAGE = require("../../../assets/USER_IMAGE.png");
 

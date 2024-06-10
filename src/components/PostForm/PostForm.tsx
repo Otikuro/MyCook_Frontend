@@ -92,7 +92,7 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
         });
         navigation.navigate("Post", { post: post });
       })
-      .catch((error) => console.log("Error", error.message));
+      .catch((error) => console.log("Error:", error.message));
   }
 
   // Función para enviar la actualización de la publicación al servidor
@@ -101,14 +101,6 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
     let fd = new FormData();
     fd.append("title", postData.title);
     fd.append("description", postData.body);
-    postData.images.forEach((image) =>
-      fd.append("images[]", {
-        name: image.image_id,
-        type: "image/jpeg",
-        uri:
-          Platform.OS === "ios" ? image.url.replace("file://", "") : image.url,
-      })
-    );
     // Si la publicación tiene una receta, agregar los datos de la receta al FormData
     if (route.params.post.recipe && route.params.post.recipe != null) {
       let recipe: RecipeType = {
@@ -131,19 +123,34 @@ export default function PostForm({ isRecipe = true }: { isRecipe: boolean }) {
         });
         navigation.navigate("Explorer");
       })
-      .catch((error) => console.log("Error", error.message));
+      .catch((error) => console.log("Error:", error.message));
+  }
+
+  function getMeasurements() {
+    getAllMeasurements()
+      .then((measurements) => setAllMeasurements(measurements))
+      .catch((e) => {
+        setTimeout(getMeasurements, 1000);
+        console.log("Fetching measurements failed", e);
+      });
+  }
+
+  function getIngredients() {
+    getAllIngredients()
+      .then((ingredients) => setAllIngredients(ingredients))
+      .catch((e) => {
+        setTimeout(getIngredients, 1000);
+        console.log("Fetching ingredients failed", e);
+      });
   }
 
   // Efecto para recuperar las unidades de medida y los ingredientes
   useEffect(() => {
     // Obtener todas las unidades de medida
-    getAllMeasurements()
-      .then((measurements) => setAllMeasurements(measurements))
-      .catch((e) => console.log(e));
+    getMeasurements();
     // Obtener todos los ingredientes
-    getAllIngredients()
-      .then((ingredients) => setAllIngredients(ingredients))
-      .catch((e) => console.log(e));
+    getIngredients();
+
     // Verificar si se está actualizando una publicación existente
     if (route.params && route.params.post) {
       setPostData(route.params.post as PostType);

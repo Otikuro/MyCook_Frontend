@@ -16,6 +16,7 @@ import { useState } from "react";
 import { commentPost, getPost, votePost } from "../../HTTP Requests/post";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Recipe from "../Recipe/Recipe";
+import { server } from "../../HTTP Requests/general";
 
 const USER_IMAGE = require("../../../assets/USER_IMAGE.png");
 const DOWN_ARROW_IMAGE = require("../../../assets/DOWN_ARROW_IMAGE.png");
@@ -89,7 +90,7 @@ export default function Post({
             isPreviewed
               ? () =>
                   getPost(post.post_id).then((post) =>
-                  //@ts-ignore
+                    //@ts-ignore
                     navigation.navigate("Post", { post: post })
                   )
               : () => {}
@@ -109,7 +110,7 @@ export default function Post({
               {isPreviewed && post.images[0] != undefined && (
                 <Image
                   style={styles.postImage}
-                  source={{ uri: post.images[0].url }}
+                  source={{ uri: server + "api/image/" + post.images[0].url }}
                 />
               )}
             </>
